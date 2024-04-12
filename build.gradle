@@ -1,0 +1,45 @@
+plugins {
+    id 'application' //아래서 applicationDistribution을 사용하기 위해 플러그인에 id 'application'을 추가해야한다.
+    id 'java' // 그래들에 자바 환경임을 알린다
+    id 'idea' // 그래들에 인텔리제이 환경임을 알린다
+}
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    implementation 'com.google.code.gson:gson:2.8.6'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+task Server(type: CreateStartScripts) {
+    mainClass = 'server'
+    applicationName = 'server'
+    outputDir = new File(project.buildDir, 'tmp')
+    classpath = startScripts.classpath
+} // Server를 task로 등록
+
+task Client(type: CreateStartScripts) {
+    mainClass = 'client'
+    applicationName = 'client'
+    outputDir = new File(project.buildDir, 'tmp')
+    classpath = startScripts.classpath
+} // Client를 task로 등록
+
+applicationDistribution.into('bin') {
+    // application을 분배한다.
+
+    from(Server) // Server task를 bin폴더로
+    from(Client) // Client task를 bin폴더로
+
+    fileMode = 0755	// 신경 안써도 됨. https://chmodcommand.com/chmod-0755/
+}
