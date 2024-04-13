@@ -20,26 +20,3 @@ dependencies {
 test {
     useJUnitPlatform()
 }
-
-tasks.register('Server', CreateStartScripts) {
-    mainClass = 'server'
-    applicationName = 'server'
-    outputDir = new File(project.getBuildFile(), 'tmp')
-    classpath = startScripts.classpath
-} // Server를 task로 등록
-
-tasks.register('Client', CreateStartScripts) {
-    mainClass = 'client'
-    applicationName = 'client'
-    outputDir = new File(project.getBuildFile(), 'tmp')
-    classpath = startScripts.classpath
-} // Client를 task로 등록
-
-applicationDistribution.into('bin') {
-    // application을 분배한다.
-
-    from(Server) // Server task를 bin폴더로
-    from(Client) // Client task를 bin폴더로
-
-    fileMode = 0755	// 신경 안써도 됨. https://chmodcommand.com/chmod-0755/
-}
