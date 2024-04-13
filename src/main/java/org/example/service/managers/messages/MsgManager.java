@@ -1,4 +1,4 @@
-package org.example.controller.managers.messages;
+package org.example.service.managers.messages;
 
 abstract class MsgManager {
 

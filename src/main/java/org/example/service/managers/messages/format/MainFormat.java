@@ -1,4 +1,4 @@
-package org.example.controller.managers.messages.format;
+package org.example.service.managers.messages.format;
 
 import java.util.Map;
 

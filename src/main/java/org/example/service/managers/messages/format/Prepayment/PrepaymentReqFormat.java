@@ -1,6 +1,6 @@
-package org.example.controller.managers.messages.format.Prepayment;
+package org.example.service.managers.messages.format.Prepayment;
 
-import org.example.controller.managers.messages.format.MainFormat;
+import org.example.service.managers.messages.format.MainFormat;
 
 public class PrepaymentReqFormat extends MainFormat {
     public PrepaymentReqFormat(String src_id, String dst_id, String item_code, int item_num, String cert_code) {
