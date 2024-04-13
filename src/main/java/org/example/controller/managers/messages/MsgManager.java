@@ -10,7 +10,6 @@ abstract class MsgManager {
         this.cert_code = "random_code";
     }
 
-    abstract void convertToFormat(Object... params);
-    abstract void request();
-    abstract void response();
+    abstract void request(String src_id, Object... massage_contents);
+    abstract void response(String src_id, Object... massage_contents);
 }
