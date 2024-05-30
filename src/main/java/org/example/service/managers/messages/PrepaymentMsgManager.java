@@ -1,14 +1,33 @@
 package org.example.service.managers.messages;
 
-public class PrepaymentMsgManager extends MsgManager{
+public class PrepaymentMsgManager extends MsgManager {
 
-    @Override
-    void request(String src_id, Object... massage_contents){
-        // super.writer를 통해 request 전달
+    /**
+     * Default constructor
+     */
+    public PrepaymentMsgManager() {
     }
 
-    @Override
-    void response(String src_id, Object... massage_contents){
-
+    /**
+     * @param id
+     * @param selected_code
+     * @param selected_num
+     * @param option
+     */
+    public void request(String id, int selected_code, int selected_num, boolean option) {
+        // TODO implement here
     }
+
+    /**
+     * @param id
+     * @param dst_id
+     * @param coor
+     * @param item_code
+     * @param item_num
+     * @param availability
+     */
+    public void response(String id, String dst_id, Object coor, int item_code, int item_num, boolean availability) {
+        // TODO implement here
+    }
+
 }

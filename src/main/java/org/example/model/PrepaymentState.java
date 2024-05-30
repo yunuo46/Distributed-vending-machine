@@ -1,11 +1,11 @@
 package org.example.model;
 
-public class Stock {
+public class PrepaymentState {
 
     /**
      * Default constructor
      */
-    public Stock() {
+    public PrepaymentState() {
     }
 
     /**
@@ -21,29 +21,28 @@ public class Stock {
     /**
      *
      */
-    private int item_cost;
+    private String cert_code;
 
     /**
      * @param item_code
      * @param item_num
+     * @param cert_code
      */
-    public void checkStock(int item_code, int item_num) {
+    public void storePrePayment(int item_code, int item_num, String cert_code) {
         // TODO implement here
     }
 
     /**
-     * @param item_code
-     * @param item_num
+     * @param cert_code
      */
-    public void saleStock(int item_code, int item_num) {
+    public void checkCode(String cert_code) {
         // TODO implement here
     }
 
     /**
-     * @param item_code
-     * @param item_num
+     * @param cert_code
      */
-    public void editStock(int item_code, int item_num) {
+    public void disposeCode(String cert_code) {
         // TODO implement here
     }
 

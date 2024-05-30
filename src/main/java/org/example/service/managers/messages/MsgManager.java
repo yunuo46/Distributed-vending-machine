@@ -1,15 +1,34 @@
 package org.example.service.managers.messages;
 
-abstract class MsgManager {
+public class MsgManager {
 
-    protected String cert_code;
-    protected Object[] sortedDst;
-    // writer를 지녀야함
-
-    private void makeCode(){
-        this.cert_code = "random_code";
+    public MsgManager() {
     }
 
-    abstract void request(String src_id, Object... massage_contents);
-    abstract void response(String src_id, Object... massage_contents);
+    protected Object[] sortedDst;
+
+    protected String cert_code;
+
+    protected Object[] other_DVMs;
+
+    protected void makeCode() {
+        // TODO implement here
+    }
+
+    /**
+     * @param id
+     * @param ip
+     * @param port
+     */
+    public void addDVM(String id, String ip, int port) {
+        // TODO implement here
+    }
+
+    /**
+     * @param id
+     */
+    public void removeDVM(String id) {
+        // TODO implement here
+    }
+
 }
