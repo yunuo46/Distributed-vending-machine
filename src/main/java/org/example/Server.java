@@ -21,10 +21,6 @@ public class Server {
 
             // Stock 클래스에 Connection 전달
             Stock stock = new Stock(connection);
-            stock.editStock(1,3);
-            stock.checkStock(1);
-            stock.saleStock(1,2);
-            stock.checkStock(1);
 
             // 서버 소켓 생성 및 포트 지정
             ServerSocket serverSocket = new ServerSocket(8888);
