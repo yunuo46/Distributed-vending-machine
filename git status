@@ -1,0 +1,53 @@
+[33mcommit 82bbd0143cb487a2290b733ae7bcea012a617d36[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: yunuo46 <yunuo468@gmail.com>
+Date:   Thu May 30 18:43:50 2024 +0900
+
+    feat: javafx init
+
+[33mcommit 887f3a6a39272f384d48ed09e2f522f56cfb49ee[m
+Author: yunuo46 <yunuo468@gmail.com>
+Date:   Thu May 30 17:38:10 2024 +0900
+
+    feat: generate code init
+
+[33mcommit 9251d6f1a94cda592ef792982f32a0fdbc223b0e[m
+Author: yunuo46 <yunuo468@gmail.com>
+Date:   Sat Apr 13 18:06:15 2024 +0900
+
+    fix: 패키지 구조 수정 manager를 controller -> service패키치로 변경
+
+[33mcommit 5b6e9c234b5b74052c73b886c06f727cec34e7bb[m
+Author: yunuo46 <yunuo468@gmail.com>
+Date:   Sat Apr 13 16:06:59 2024 +0900
+
+    fix: request(), response()가 가변인자를 파라미터로 받도록 수정
+
+[33mcommit 2b010eadd9344fd5cd42083744e352cebb060bbc[m
+Author: 송현우 <83938394+yunuo46@users.noreply.github.com>
+Date:   Sat Apr 13 15:34:40 2024 +0900
+
+    docs: MsgManager 주석 추가
+
+[33mcommit 048d5213283b810a4f59171675ce833b8a650bf1[m
+Author: 송현우 <83938394+yunuo46@users.noreply.github.com>
+Date:   Sat Apr 13 15:21:10 2024 +0900
+
+    feat: 패키지 구조 설정 & MsgManager와 format 스켈레톤 코드 구현
+
+[33mcommit eccd9ab3dfb6a30b2c5f1e62926c36af8eb974f8[m
+Author: 송현우 <83938394+yunuo46@users.noreply.github.com>
+Date:   Fri Apr 12 23:45:14 2024 +0900
+
+    feat: build.gradle upgrade from deprecated version
+
+[33mcommit af995be14f19211e01dc8e3d3abcc17335e1a598[m
+Author: 송현우 <83938394+yunuo46@users.noreply.github.com>
+Date:   Fri Apr 12 23:37:16 2024 +0900
+
+    feat: gitignore 업데이트
+
+[33mcommit 4bb317d7eb847354db093d2110736436a0939c2e[m
+Author: 송현우 <83938394+yunuo46@users.noreply.github.com>
+Date:   Fri Apr 12 23:11:09 2024 +0900
+
+    init: project init

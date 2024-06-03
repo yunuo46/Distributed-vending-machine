@@ -16,7 +16,7 @@ public class Client {
             jsonSocketService.start();
 
             // 서버로 메시지 전송
-            jsonSocketService.sendMessage("안녕하세요, 서버님!");
+            jsonSocketService.sendMessage("hello, server!");
 
             // 클라이언트 종료
             jsonSocketService.stop();
