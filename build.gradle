@@ -38,4 +38,13 @@ jar {
                 'Main-Class': 'org.example.Server',
         )
     }
+    enabled=true
+    archiveClassifier = '' // use empty string
+
+    from { // 의존성 포함
+        configurations.runtimeClasspath.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
