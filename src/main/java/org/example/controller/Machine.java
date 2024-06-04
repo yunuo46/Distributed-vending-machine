@@ -7,33 +7,18 @@ import java.util.*;
  *
  */
 public class Machine {
-
-    /**
-     * Default constructor
-     */
     public Machine() {
     }
 
-    /**
-     *
-     */
     private String id;
 
-    /**
-     *
-     */
     private Object coordinate;
 
-    /**
-     *
-     */
     private int selected_code;
 
-    /**
-     *
-     */
     private int selected_num;
 
+    private int selected_cost;
     /**
      * @param cert_code
      */

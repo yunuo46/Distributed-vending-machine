@@ -40,7 +40,7 @@ public class SaleManager {
     /**
      * @param card_id
      */
-    public void checkCardData(String card_id) {
+    public void checkCardData(String card_id, int price) {
         // TODO implement here
     }
 

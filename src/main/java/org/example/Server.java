@@ -1,5 +1,7 @@
 package org.example;
 
+import org.example.model.Card;
+import org.example.model.PrepaymentState;
 import org.example.model.Stock;
 import org.example.service.socket.JsonSocketService;
 import org.example.service.socket.JsonSocketServiceImpl;
@@ -14,13 +16,16 @@ public class Server {
         String jdbcUrl = System.getenv("DB_URL");
         String username = System.getenv("DB_USERNAME");
         String password = System.getenv("DB_PASSWORD");
+
         try {
             // rds 연결
             Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
             System.out.println("Database connected!");
 
-            // Stock 클래스에 Connection 전달
-            Stock stock = new Stock(connection);
+            // model 클래스에 Connection 전달
+            new Stock(connection);
+            new Card(connection);
+            new PrepaymentState(connection);
 
             // 서버 소켓 생성 및 포트 지정
             ServerSocket serverSocket = new ServerSocket(8888);
