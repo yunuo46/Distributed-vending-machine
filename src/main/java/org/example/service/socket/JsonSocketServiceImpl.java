@@ -1,6 +1,8 @@
 package org.example.service.socket;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -39,7 +41,7 @@ public class JsonSocketServiceImpl implements JsonSocketService {
     }
 
     @Override
-    public void sendMessage(Object message) {
+    public void sendMessage(JsonObject message) {
         writer.println(gson.toJson(message));
     }
 

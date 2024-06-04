@@ -1,4 +1,6 @@
 package org.example.service.managers.messages.format.Stock;
 
-public class StockResFormat {
+import org.example.service.managers.messages.format.MainFormat;
+
+public class StockResFormat extends MainFormat {
 }

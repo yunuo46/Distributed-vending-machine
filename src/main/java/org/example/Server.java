@@ -1,5 +1,6 @@
 package org.example;
 
+import com.google.gson.JsonObject;
 import org.example.model.Card;
 import org.example.model.PrepaymentState;
 import org.example.model.Stock;
@@ -27,6 +28,8 @@ public class Server {
             new Card(connection);
             new PrepaymentState(connection);
 
+            // manager 생성
+
             // 서버 소켓 생성 및 포트 지정
             ServerSocket serverSocket = new ServerSocket(8888);
             System.out.println("waiting for connection on port 8888...");
@@ -40,8 +43,8 @@ public class Server {
             jsonSocketService.start();
 
             // 클라이언트로부터 메시지 수신 및 출력
-            String receivedMessage = jsonSocketService.receiveMessage(String.class);
-            System.out.println("received message: " + receivedMessage);
+            JsonObject receivedMessage = jsonSocketService.receiveMessage(JsonObject.class);
+            System.out.println(receivedMessage.get("msg_type"));
 
             // 서버 종료
             jsonSocketService.stop();
