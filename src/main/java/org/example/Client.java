@@ -31,6 +31,10 @@ public class Client {
             // 서버로 메시지 전송
             jsonSocketService.sendMessage(jsonObject);
 
+            // 서버로부터 메세지 응답
+            JsonObject receivedMessage = jsonSocketService.receiveMessage(JsonObject.class);
+            System.out.println(receivedMessage);
+
             // 클라이언트 종료
             jsonSocketService.stop();
         } catch (Exception e) {

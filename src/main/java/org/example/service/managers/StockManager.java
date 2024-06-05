@@ -15,10 +15,9 @@ public class StockManager {
     private int MAX_CNT;
 
 
-    public boolean checkStock(int item_code, int item_num) {
-        int stock_num = stock.checkStock(item_code);
-        if (stock_num >= item_num) return true;
-        else return false;
+    public int checkStock(int item_code, int item_num) {
+        if(MAX_CNT >= item_num) return 0;
+        else return stock.checkStock(item_code);
     }
 
     public void saleStock(int item_code, int item_num) {

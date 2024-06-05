@@ -1,6 +1,10 @@
 package org.example.service.managers.messages;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.example.service.managers.StockManager;
+import org.example.service.managers.messages.format.Stock.StockResFormat;
 import org.example.service.socket.JsonSocketService;
 
 public class StockMsgManager extends MsgManager {
@@ -17,11 +21,12 @@ public class StockMsgManager extends MsgManager {
     }
 
     public void response(String id, String dst_id, Object coor, int item_code, int item_num) {
-        boolean isStock = stockManager.checkStock(item_code, item_num);
-        if(isStock){
-            // 재고 존재 응답
-        }else{
-            // 재고 없음 응답
-        }
+        int stock_num = stockManager.checkStock(item_code, item_num);
+        int[] coorArr = (int[])coor;
+        StockResFormat res = new StockResFormat(id, dst_id, item_code, stock_num, coorArr[0],coorArr[1]);
+        Gson gson = new Gson();
+        String jsonStr = gson.toJson(res);
+        JsonObject jsonObj = JsonParser.parseString(jsonStr).getAsJsonObject();
+        jsonSocketService.sendMessage(jsonObj);
     }
 }

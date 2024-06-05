@@ -11,7 +11,7 @@ import java.sql.Connection;
 
 public class Machine {
     public Machine(JsonSocketService jsonSocketService, Connection connection) {
-        this.coordinate = new double[]{0.0, 0.0}; // 기본 좌표를 (0.0, 0.0)으로 초기화
+        this.coordinate = new int[]{0, 0}; // 기본 좌표를 (0.0, 0.0)으로 초기화
         StockManager stockManager = new StockManager(connection);
 
         stockMsgManager = new StockMsgManager(jsonSocketService, stockManager);
