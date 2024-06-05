@@ -1,31 +1,27 @@
 package org.example.service.managers.messages;
 
-public class StockMsgManager extends MsgManager {
+import org.example.service.managers.StockManager;
+import org.example.service.socket.JsonSocketService;
 
-    /**
-     * Default constructor
-     */
-    public StockMsgManager() {
+public class StockMsgManager extends MsgManager {
+    private JsonSocketService jsonSocketService;
+    private StockManager stockManager;
+
+    public StockMsgManager(JsonSocketService jsonSocketService, StockManager stockManager) {
+        this.jsonSocketService = jsonSocketService;
+        this.stockManager = stockManager;
     }
 
-    /**
-     * @param id
-     * @param selected_code
-     * @param selected_num
-     */
     public void request(String id, int selected_code, int selected_num) {
         // TODO implement here
     }
 
-    /**
-     * @param id
-     * @param dst_id
-     * @param coor
-     * @param item_code
-     * @param item_num
-     */
     public void response(String id, String dst_id, Object coor, int item_code, int item_num) {
-        // TODO implement here
+        boolean isStock = stockManager.checkStock(item_code, item_num);
+        if(isStock){
+            // 재고 존재 응답
+        }else{
+            // 재고 없음 응답
+        }
     }
-
 }

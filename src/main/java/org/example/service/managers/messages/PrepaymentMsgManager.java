@@ -1,7 +1,12 @@
 package org.example.service.managers.messages;
 
+import org.example.service.socket.JsonSocketService;
+
 public class PrepaymentMsgManager extends MsgManager {
-    public PrepaymentMsgManager() {
+    private JsonSocketService jsonSocketService;
+
+    public PrepaymentMsgManager(JsonSocketService jsonSocketService) {
+        this.jsonSocketService = jsonSocketService;
     }
 
     public void request(String id, int selected_code, int selected_num, boolean option) {

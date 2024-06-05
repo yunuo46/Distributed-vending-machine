@@ -1,6 +1,7 @@
 package org.example;
 
 import com.google.gson.JsonObject;
+import org.example.controller.Machine;
 import org.example.model.Card;
 import org.example.model.PrepaymentState;
 import org.example.model.Stock;
@@ -24,11 +25,9 @@ public class Server {
             System.out.println("Database connected!");
 
             // model 클래스에 Connection 전달
-            new Stock(connection);
-            new Card(connection);
-            new PrepaymentState(connection);
-
-            // manager 생성
+            Stock stock = new Stock(connection);
+            Card card = new Card(connection);
+            PrepaymentState prepaymentState = new PrepaymentState(connection);
 
             // 서버 소켓 생성 및 포트 지정
             ServerSocket serverSocket = new ServerSocket(8888);
@@ -42,9 +41,15 @@ public class Server {
             JsonSocketService jsonSocketService = new JsonSocketServiceImpl(clientSocket);
             jsonSocketService.start();
 
+            // 머신 생성
+            Machine machine = new Machine(jsonSocketService, connection);
+
             // 클라이언트로부터 메시지 수신 및 출력
             JsonObject receivedMessage = jsonSocketService.receiveMessage(JsonObject.class);
-            System.out.println(receivedMessage.get("msg_type"));
+
+            if(receivedMessage.get("msg_type").getAsString().equals("req_stock")){
+                machine.stockResponse(receivedMessage);
+            }
 
             // 서버 종료
             jsonSocketService.stop();
