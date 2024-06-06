@@ -86,13 +86,13 @@ public class Server {
     private static void startHttpServer(Connection connection) {
         try {
             // HTTP 서버 생성 및 포트 지정
-            HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
+            HttpServer server = HttpServer.create(new InetSocketAddress(80), 0);
             Machine machine = new Machine(null, connection);
 
-            server.createContext("/api/selectItem", new SelectItemHandler(machine));
+            server.createContext("/api/select", new SelectItemHandler(machine));
             server.setExecutor(null);
             server.start();
-            System.out.println("HTTP Server started on port 8080");
+            System.out.println("HTTP Server started on port 80");
         } catch (IOException e) {
             e.printStackTrace();
         }
