@@ -68,9 +68,13 @@ public class MsgManager {
 
         for (DVMDto dvm : dvmList) {
             try {
+                System.out.println("stock request to "+dvm.getId());
                 JsonSocketService JsonRequestSocketService = connectSocket(dvm.getIp(),Integer.parseInt(dvm.getPort()));
                 CoorDto coor = stockMsgManager.request(id, dvm.getId(), item_code, item_num, JsonRequestSocketService);
-                if(coor != null) coors.add(coor);
+                if(coor != null) {
+                    System.out.println(dvm.getId()+" have sufficient stock");
+                    coors.add(coor);
+                }
                 JsonRequestSocketService.stop();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -83,6 +87,7 @@ public class MsgManager {
             int dvm_y = coor.getCoorY();
             int dvm_item_code = coor.getItemCode();
             float dist = (float)Math.sqrt(Math.pow(dvm_x-x,2)+Math.pow(dvm_y-y,2));
+            System.out.println("dvm_id: "+dvm_id+"dist: "+dist);
             dvm.addSortedDVM(dvm_id, dvm_x, dvm_y,dvm_item_code, dist);
         }
         return dvm.getNearestDVM(item_code);

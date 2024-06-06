@@ -44,13 +44,17 @@ public class Machine {
 
     public void selectItem(int item_code, int item_num) {
         boolean isStock = saleManager.offerItem(item_code, item_num);
-        System.out.println("isStock = " + isStock);
         if(!isStock){
+            System.out.println("stock not enough to payment");
             ClosestDVMDto closestDVM = msgManager.stockRequest(id, item_code, item_num);
             if(closestDVM == null){
+                System.out.println("No DVM exists with sufficient stock");
                 printManager.displayFailedGetItem();
             }
-            else printManager.displayClosestDVM(closestDVM);
+            else {
+                System.out.println("closest DVM: " + closestDVM.getId());
+                printManager.displayClosestDVM(closestDVM);
+            }
         }
     }
 
@@ -58,13 +62,18 @@ public class Machine {
         PrepaymentDto prepaymentDto = msgManager.prepaymentRequest(id, dst_id, item_code, item_num);
         boolean success = prepaymentDto.isSuccess();
         if(success){
+            System.out.println("prepayment successful");
             printManager.displayPrepayment(prepaymentDto.getCertCode());
         }else{
             ClosestDVMDto closestDVMDto = dvm.getNearestDVM(item_code);
             if(closestDVMDto == null){
+                System.out.println("prepayment failed");
                 printManager.displayNextDVM(null,0,0);
             }
-            else printManager.displayNextDVM(closestDVMDto.getId(), closestDVMDto.getX(), closestDVMDto.getY());
+            else {
+                System.out.println("prepayment next DVM: " + closestDVMDto.getId());
+                printManager.displayNextDVM(closestDVMDto.getId(), closestDVMDto.getX(), closestDVMDto.getY());
+            }
         }
     }
 

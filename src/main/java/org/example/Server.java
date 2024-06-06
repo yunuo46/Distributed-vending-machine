@@ -59,8 +59,10 @@ public class Server {
                             if (receivedMessage == null) break;
                             String msgType = receivedMessage.get("msg_type").getAsString();
                             if (msgType.equals("req_stock")) {
+                                System.out.println("Received stock request!");
                                 machine.stockResponse(receivedMessage);
                             } else if (msgType.equals("req_prepay")) {
+                                System.out.println("Received prepay request!");
                                 machine.prepaymentResponse(receivedMessage);
                             } else {
                                 break;
@@ -123,6 +125,7 @@ public class Server {
 
                 // Machine 생성
                 Machine machine = new Machine(null, connection, exchange);
+                System.out.println("select item api");
                 machine.selectItem(item_code, item_num);
             } else if ("OPTIONS".equals(exchange.getRequestMethod())) {
                 exchange.sendResponseHeaders(204, -1); // No Content
@@ -150,6 +153,7 @@ public class Server {
 
                 // Machine 생성
                 Machine machine = new Machine(null, connection, exchange);
+                System.out.println("insert card api");
                 machine.insertCardData(card_data, item_code, item_num);
             } else if ("OPTIONS".equals(exchange.getRequestMethod())) {
                 exchange.sendResponseHeaders(204, -1); // No Content
@@ -177,6 +181,7 @@ public class Server {
 
                 // Machine 생성
                 Machine machine = new Machine(null, connection, exchange);
+                System.out.println("select payment api");
                 machine.selectPaymentOption(dvm_id, item_code, item_num);
             } else if ("OPTIONS".equals(exchange.getRequestMethod())) {
                 exchange.sendResponseHeaders(204, -1); // No Content

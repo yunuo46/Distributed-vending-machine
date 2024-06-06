@@ -18,6 +18,7 @@ public class SaleManager {
     }
 
     public void processPrepayment(int item_code, int item_num, String cert_code) {
+        System.out.println("sale stock and store prepayment");
         stockManager.saleStock(item_code, item_num);
         prepaymentState.storePrePayment(item_code, item_num, cert_code);
     }
@@ -28,7 +29,6 @@ public class SaleManager {
 
     public boolean offerItem(int selected_code, int selected_num) {
         int stock_num = stockManager.checkStock(selected_code, selected_num);
-        System.out.println("stock_num = " + stock_num);
         if(stock_num > 0 && stock_num >= selected_num) {
             printManager.offerItem();
             return true;
@@ -37,8 +37,10 @@ public class SaleManager {
 
     public void checkCardData(String card_id, int item_code, int item_num) {
         int price = item_num * stockManager.checkPrice(item_code);
+        System.out.println("price is " + price);
         boolean success = card.checkCardData(card_id, price);
         if(success) {
+            System.out.println("card is valid");
             stockManager.saleStock(item_code, item_num);
         }
         printManager.displayPayment(success);

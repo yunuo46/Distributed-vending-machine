@@ -33,16 +33,18 @@ public class PrepaymentMsgManager {
         int item_num = msg_content.get("item_num").getAsInt();
         boolean availability = msg_content.get("availability").getAsBoolean();
 
-        if(!msg_type.equals("resp_stock")|| item_code!=selected_code || item_num < selected_num) return false;
+        if(item_num < selected_num || !msg_type.equals("resp_stock")|| item_code!=selected_code) return false;
         return availability;
     }
 
     public void response(String id, String dst_id, int item_code, int item_num, String cert_code) {
         int stock_num = stockManager.checkStock(item_code, item_num);
         PrepaymentResFormat res;
-        if(stock_num == 0 || stock_num < item_num) {
+        if(stock_num <= 0 || stock_num < item_num) {
+            System.out.println("stock not enough to prepayment");
             res = new PrepaymentResFormat(id, dst_id, item_code, item_num, false);
         } else{
+            System.out.println("stock enough to prepayment");
             res = new PrepaymentResFormat(id, dst_id, item_code, item_num, true);
             saleManager.processPrepayment(item_code, item_num, cert_code);
         }
