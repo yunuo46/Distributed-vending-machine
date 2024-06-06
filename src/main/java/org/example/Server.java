@@ -91,6 +91,7 @@ public class Server {
 
             server.createContext("/api/select", new SelectItemHandler(connection));
             server.createContext("/api/payment", new insertCardHandler(connection));
+            server.createContext("/api/prepayment", new SelectPrepaymentHandler(connection));
             server.setExecutor(null);
             server.start();
             System.out.println("HTTP Server started on port 8080");
@@ -145,6 +146,34 @@ public class Server {
                 // Machine 생성
                 Machine machine = new Machine(null, connection, exchange);
                 machine.insertCardData(card_data, item_code, item_num);
+            } else if ("OPTIONS".equals(exchange.getRequestMethod())) {
+                addCorsHeaders(exchange);
+                exchange.sendResponseHeaders(204, -1); // No Content
+            } else {
+                exchange.sendResponseHeaders(405, -1); // Method Not Allowed
+            }
+        }
+    }
+
+    static class SelectPrepaymentHandler implements HttpHandler {
+        private final Connection connection;
+
+        public SelectPrepaymentHandler(Connection connection) {
+            this.connection = connection;
+        }
+
+        @Override
+        public void handle(HttpExchange exchange) throws IOException {
+            addCorsHeaders(exchange);
+            if ("POST".equals(exchange.getRequestMethod())) {
+                JsonObject message = parseRequest(exchange);
+                String dvm_id = message.get("dvm_id").getAsString();
+                int item_code = message.get("item_code").getAsInt();
+                int item_num = message.get("item_num").getAsInt();
+
+                // Machine 생성
+                Machine machine = new Machine(null, connection, exchange);
+                machine.selectPaymentOption(dvm_id, item_code, item_num);
             } else if ("OPTIONS".equals(exchange.getRequestMethod())) {
                 addCorsHeaders(exchange);
                 exchange.sendResponseHeaders(204, -1); // No Content

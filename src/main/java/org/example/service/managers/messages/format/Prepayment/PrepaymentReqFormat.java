@@ -5,7 +5,7 @@ import org.example.service.managers.messages.format.MainFormat;
 import java.util.HashMap;
 
 public class PrepaymentReqFormat extends MainFormat {
-    public PrepaymentReqFormat(String src_id, String dst_id, String item_code, int item_num, String cert_code) {
+    public PrepaymentReqFormat(String src_id, String dst_id, int item_code, int item_num, String cert_code) {
         this.msg_type = "req_prepay";
         this.src_id = src_id;
         this.dst_id = dst_id;

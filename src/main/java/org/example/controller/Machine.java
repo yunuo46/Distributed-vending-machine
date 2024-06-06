@@ -3,31 +3,39 @@ package org.example.controller;
 import com.google.gson.JsonObject;
 import com.sun.net.httpserver.HttpExchange;
 import org.example.model.Card;
+import org.example.model.DVM;
 import org.example.model.PrepaymentState;
+import org.example.model.dto.ClosestDVMDto;
+import org.example.model.dto.PrepaymentDto;
 import org.example.service.managers.PrintManager;
 import org.example.service.managers.SaleManager;
 import org.example.service.managers.StockManager;
 import org.example.service.managers.messages.MsgManager;
 import org.example.service.socket.JsonSocketService;
 
+import java.io.IOException;
 import java.sql.Connection;
 
 public class Machine {
-    private String id = "team9";
-    private Object coordinate;
-    private MsgManager msgManager;
-    private SaleManager saleManager;
+    private final String id;
+    private final int[] coordinate;
+    private final MsgManager msgManager;
+    private final SaleManager saleManager;
+    private final PrintManager printManager;
+    private final DVM dvm;
 
     public Machine(JsonSocketService jsonSocketService, Connection connection, HttpExchange exchange) {
-        this.coordinate = new int[]{0, 0}; // 기본 좌표를 (0, 0)으로 초기화
+        id = "Team9";
+        coordinate = new int[]{0, 0}; // 기본 좌표를 (0, 0)으로 초기화
+        printManager = new PrintManager(exchange);
+        dvm = new DVM(connection);
 
         StockManager stockManager = new StockManager(connection);
-        PrintManager printManager = new PrintManager(exchange);
         PrepaymentState prepaymentState = new PrepaymentState(connection);
         Card card = new Card(connection);
 
         this.saleManager = new SaleManager(stockManager, printManager, prepaymentState, card);
-        this.msgManager = new MsgManager(jsonSocketService, stockManager, printManager, this.saleManager);
+        this.msgManager = new MsgManager(jsonSocketService, stockManager, printManager, saleManager, dvm, coordinate);
     }
 
     public void insertCode(String cert_code) {
@@ -37,12 +45,20 @@ public class Machine {
     public void selectItem(int item_code, int item_num) {
         boolean isStock = saleManager.offerItem(item_code, item_num);
         if(!isStock){
-            msgManager.stockRequest(id, item_code, item_num);
+            ClosestDVMDto closestDVM = msgManager.stockRequest(id, item_code, item_num);
+            printManager.displayClosestDVM(closestDVM);
         }
     }
 
-    public void selectPaymentOption(boolean option) {
-        // TODO implement here
+    public void selectPaymentOption(String dst_id, int item_code, int item_num) throws IOException {
+        PrepaymentDto prepaymentDto = msgManager.prepaymentRequest(id, dst_id, item_code, item_num);
+        boolean success = prepaymentDto.isSuccess();
+        if(success){
+            printManager.displayPrepayment(prepaymentDto.getCertCode());
+        }else{
+            ClosestDVMDto closestDVMDto = dvm.getNearestDVM(item_code);
+            printManager.displayNextDVM(closestDVMDto.getId(), closestDVMDto.getX(), closestDVMDto.getY());
+        }
     }
 
     public void insertCardData(String card_id, int item_code, int item_num) {
@@ -56,10 +72,6 @@ public class Machine {
         int item_code = msg_content.get("item_code").getAsInt();
         int item_num = msg_content.get("item_num").getAsInt();
         msgManager.stockResponse(dst_id, src_id, coordinate, item_code, item_num);
-    }
-
-    public void prepaymentRequest(){
-        //prepaymentMsgManager.request();
     }
 
     public void prepaymentResponse(JsonObject message){

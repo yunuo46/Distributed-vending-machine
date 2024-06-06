@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 public class StockResFormat extends MainFormat {
     public StockResFormat(String src_id, String dst_id, int item_code, int item_num, int coor_x, int coor_y) {
-        this.msg_type = "res_stock";
+        this.msg_type = "resp_stock";
         this.src_id = src_id;
         this.dst_id = dst_id;
 

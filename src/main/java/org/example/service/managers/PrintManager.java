@@ -2,6 +2,7 @@ package org.example.service.managers;
 
 import com.google.gson.JsonObject;
 import com.sun.net.httpserver.HttpExchange;
+import org.example.model.dto.ClosestDVMDto;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -37,6 +38,30 @@ public class PrintManager {
     public void offerCoor(Object coor) {
         JsonObject responseJson = new JsonObject();
         responseJson.addProperty("coor", coor.toString()); // assuming coor has a meaningful toString() method
+        sendResponse(responseJson);
+    }
+
+    public void displayClosestDVM(ClosestDVMDto closestDVM) {
+        JsonObject responseJson = new JsonObject();
+        responseJson.addProperty("dvm_id", closestDVM.getId());
+        responseJson.addProperty("coor_x", closestDVM.getX());
+        responseJson.addProperty("coor_y", closestDVM.getY());
+        sendResponse(responseJson);
+    }
+
+    public void displayPrepayment(String cert_code) {
+        JsonObject responseJson = new JsonObject();
+        responseJson.addProperty("success", true);
+        responseJson.addProperty("code", cert_code);
+        sendResponse(responseJson);
+    }
+
+    public void displayNextDVM(String id, int x, int y) {
+        JsonObject responseJson = new JsonObject();
+        responseJson.addProperty("success", false);
+        responseJson.addProperty("dvm_id", id);
+        responseJson.addProperty("x", x);
+        responseJson.addProperty("y", y);
         sendResponse(responseJson);
     }
 
