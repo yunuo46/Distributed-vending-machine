@@ -90,6 +90,7 @@ public class Server {
             HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
 
             server.createContext("/api/select", new SelectItemHandler(connection));
+            server.createContext("/api/payment", new insertCardHandler(connection));
             server.setExecutor(null);
             server.start();
             System.out.println("HTTP Server started on port 8080");
@@ -123,20 +124,47 @@ public class Server {
                 exchange.sendResponseHeaders(405, -1); // Method Not Allowed
             }
         }
+    }
 
-        private JsonObject parseRequest(HttpExchange exchange) throws IOException {
-            InputStreamReader isr = new InputStreamReader(exchange.getRequestBody(), StandardCharsets.UTF_8);
-            JsonObject message = JsonParser.parseReader(isr).getAsJsonObject();
-            isr.close();
-            return message;
+    static class insertCardHandler implements HttpHandler {
+        private final Connection connection;
+
+        public insertCardHandler(Connection connection) {
+            this.connection = connection;
         }
 
-        private void addCorsHeaders(HttpExchange exchange) {
-            exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
-            exchange.getResponseHeaders().add("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-            exchange.getResponseHeaders().add("Access-Control-Allow-Headers", "Content-Type, Authorization");
-            exchange.getResponseHeaders().add("Access-Control-Expose-Headers", "Content-Length,Content-Type");
-            exchange.getResponseHeaders().add("Access-Control-Allow-Credentials", "true");
+        @Override
+        public void handle(HttpExchange exchange) throws IOException {
+            addCorsHeaders(exchange);
+            if ("POST".equals(exchange.getRequestMethod())) {
+                JsonObject message = parseRequest(exchange);
+                String card_data = message.get("card_data").getAsString();
+                int item_code = message.get("item_code").getAsInt();
+                int item_num = message.get("item_num").getAsInt();
+
+                // Machine 생성
+                Machine machine = new Machine(null, connection, exchange);
+                machine.insertCardData(card_data, item_code, item_num);
+            } else if ("OPTIONS".equals(exchange.getRequestMethod())) {
+                addCorsHeaders(exchange);
+                exchange.sendResponseHeaders(204, -1); // No Content
+            } else {
+                exchange.sendResponseHeaders(405, -1); // Method Not Allowed
+            }
         }
+    }
+
+    private static JsonObject parseRequest(HttpExchange exchange) throws IOException {
+        InputStreamReader isr = new InputStreamReader(exchange.getRequestBody(), StandardCharsets.UTF_8);
+        JsonObject message = JsonParser.parseReader(isr).getAsJsonObject();
+        isr.close();
+        return message;
+    }
+    private static void addCorsHeaders(HttpExchange exchange) {
+        exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
+        exchange.getResponseHeaders().add("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+        exchange.getResponseHeaders().add("Access-Control-Allow-Headers", "Content-Type, Authorization");
+        exchange.getResponseHeaders().add("Access-Control-Expose-Headers", "Content-Length,Content-Type");
+        exchange.getResponseHeaders().add("Access-Control-Allow-Credentials", "true");
     }
 }

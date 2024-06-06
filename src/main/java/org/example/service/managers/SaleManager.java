@@ -30,13 +30,17 @@ public class SaleManager {
         int stock_num = stockManager.checkStock(selected_code, selected_num);
         if(stock_num > 0) {
             printManager.offerItem();
-            stockManager.saleStock(selected_code, selected_num);
         }else{
 
         }
     }
 
-    public void checkCardData(String card_id, int price) {
-        // TODO implement here
+    public void checkCardData(String card_id, int item_code, int item_num) {
+        int price = item_num * stockManager.checkPrice(item_code);
+        boolean success = card.checkCardData(card_id, price);
+        if(success) {
+            stockManager.saleStock(item_code, item_num);
+        }
+        printManager.displayPayment(success);
     }
 }

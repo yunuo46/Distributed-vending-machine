@@ -28,4 +28,7 @@ public class StockManager {
         // TODO implement here
     }
 
+    public int checkPrice(int item_code) {
+        return stock.checkPrice(item_code);
+    }
 }

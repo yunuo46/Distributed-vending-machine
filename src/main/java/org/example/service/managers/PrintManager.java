@@ -21,6 +21,12 @@ public class PrintManager {
         sendResponse(responseJson);
     }
 
+    public void displayPayment(boolean success) {
+        JsonObject responseJson = new JsonObject();
+        responseJson.addProperty("success", success);
+        sendResponse(responseJson);
+    }
+
     public void offerCoorAndCode(Object coor, String cert_code) {
         JsonObject responseJson = new JsonObject();
         responseJson.addProperty("coor", coor.toString()); // assuming coor has a meaningful toString() method

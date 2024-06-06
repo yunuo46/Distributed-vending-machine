@@ -15,9 +15,6 @@ import java.sql.Connection;
 public class Machine {
     private String id = "team9";
     private Object coordinate;
-    private int selected_code;
-    private int selected_num;
-    private int selected_cost;
     private MsgManager msgManager;
     private SaleManager saleManager;
 
@@ -38,8 +35,6 @@ public class Machine {
     }
 
     public void selectItem(int item_code, int item_num) {
-        this.selected_code = item_code;
-        this.selected_num = item_num;
         saleManager.offerItem(item_code, item_num);
     }
 
@@ -47,8 +42,8 @@ public class Machine {
         // TODO implement here
     }
 
-    public void insertCardData(String card_id) {
-        // TODO implement here
+    public void insertCardData(String card_id, int item_code, int item_num) {
+        saleManager.checkCardData(card_id, item_code,item_num);
     }
 
     public void stockRequest(JsonObject message){

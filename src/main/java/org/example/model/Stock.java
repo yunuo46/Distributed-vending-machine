@@ -21,7 +21,6 @@ public class Stock {
 
             while (rs.next()) {
                 check_num = rs.getInt("item_num");
-                System.out.println("item num = " + check_num);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -74,4 +73,19 @@ public class Stock {
         }
     }
 
+    public int checkPrice(int item_code) {
+        String sql = "SELECT item_cost FROM stock WHERE item_code = ?";
+        int check_cost = 0;
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, item_code);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                check_cost = rs.getInt("item_cost");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return check_cost;
+    }
 }
