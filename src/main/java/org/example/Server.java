@@ -117,6 +117,7 @@ public class Server {
                 Machine machine = new Machine(null, connection, exchange);
                 machine.selectItem(item_code, item_num);
             } else if ("OPTIONS".equals(exchange.getRequestMethod())) {
+                addCorsHeaders(exchange);
                 exchange.sendResponseHeaders(204, -1); // No Content
             } else {
                 exchange.sendResponseHeaders(405, -1); // Method Not Allowed
