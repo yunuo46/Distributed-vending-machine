@@ -119,7 +119,6 @@ public class Server {
                 jsonResponse.addProperty("prepayment", false);
                 sendJsonResponse(exchange, jsonResponse);
             } else if ("OPTIONS".equals(exchange.getRequestMethod())) {
-                addCorsHeaders(exchange);
                 exchange.sendResponseHeaders(204, -1); // No Content
             } else {
                 exchange.sendResponseHeaders(405, -1); // Method Not Allowed
