@@ -26,14 +26,14 @@ public class PrepaymentMsgManager {
     public boolean request(String id, String dst_id, int selected_code, int selected_num, String cert_code, JsonSocketService jsonRequestSocketService) {
         PrepaymentReqFormat req = new PrepaymentReqFormat(id, dst_id, selected_code, selected_num, cert_code);
         JsonObject receivedMessage = sendMessage(req, jsonRequestSocketService);
+
         String msg_type = receivedMessage.get("msg_type").getAsString();
         JsonObject msg_content = receivedMessage.get("msg_content").getAsJsonObject();
+        int item_code = msg_content.get(("item_code")).getAsInt();
+        int item_num = msg_content.get("item_num").getAsInt();
         boolean availability = msg_content.get("availability").getAsBoolean();
 
-        // 예외처리
-        //if(!msg_type.equals("resp_stock")||item_code!=selected_code) {}
-        //if(item_num < selected_num) return null;
-
+        if(!msg_type.equals("resp_stock")|| item_code!=selected_code || item_num < selected_num) return false;
         return availability;
     }
 

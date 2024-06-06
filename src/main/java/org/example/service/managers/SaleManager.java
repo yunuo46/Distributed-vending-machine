@@ -28,7 +28,8 @@ public class SaleManager {
 
     public boolean offerItem(int selected_code, int selected_num) {
         int stock_num = stockManager.checkStock(selected_code, selected_num);
-        if(stock_num > 0) {
+        System.out.println("stock_num = " + stock_num);
+        if(stock_num > 0 && stock_num >= selected_num) {
             printManager.offerItem();
             return true;
         }else return false;

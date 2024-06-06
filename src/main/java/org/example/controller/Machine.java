@@ -26,7 +26,7 @@ public class Machine {
 
     public Machine(JsonSocketService jsonSocketService, Connection connection, HttpExchange exchange) {
         id = "Team9";
-        coordinate = new int[]{0, 0}; // 기본 좌표를 (0, 0)으로 초기화
+        coordinate = new int[]{7, 17}; // 기본 좌표를 (0, 0)으로 초기화
         printManager = new PrintManager(exchange);
         dvm = new DVM(connection);
 
@@ -44,9 +44,13 @@ public class Machine {
 
     public void selectItem(int item_code, int item_num) {
         boolean isStock = saleManager.offerItem(item_code, item_num);
+        System.out.println("isStock = " + isStock);
         if(!isStock){
             ClosestDVMDto closestDVM = msgManager.stockRequest(id, item_code, item_num);
-            printManager.displayClosestDVM(closestDVM);
+            if(closestDVM == null){
+                printManager.displayFailedGetItem();
+            }
+            else printManager.displayClosestDVM(closestDVM);
         }
     }
 
@@ -57,7 +61,10 @@ public class Machine {
             printManager.displayPrepayment(prepaymentDto.getCertCode());
         }else{
             ClosestDVMDto closestDVMDto = dvm.getNearestDVM(item_code);
-            printManager.displayNextDVM(closestDVMDto.getId(), closestDVMDto.getX(), closestDVMDto.getY());
+            if(closestDVMDto == null){
+                printManager.displayNextDVM(null,0,0);
+            }
+            else printManager.displayNextDVM(closestDVMDto.getId(), closestDVMDto.getX(), closestDVMDto.getY());
         }
     }
 

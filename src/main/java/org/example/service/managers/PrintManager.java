@@ -22,27 +22,23 @@ public class PrintManager {
         sendResponse(responseJson);
     }
 
+    public void displayFailedGetItem() {
+        JsonObject responseJson = new JsonObject();
+        responseJson.addProperty("stock", false);
+        responseJson.addProperty("prepayment",false);
+        sendResponse(responseJson);
+    }
+
     public void displayPayment(boolean success) {
         JsonObject responseJson = new JsonObject();
         responseJson.addProperty("success", success);
         sendResponse(responseJson);
     }
 
-    public void offerCoorAndCode(Object coor, String cert_code) {
-        JsonObject responseJson = new JsonObject();
-        responseJson.addProperty("coor", coor.toString()); // assuming coor has a meaningful toString() method
-        responseJson.addProperty("cert_code", cert_code);
-        sendResponse(responseJson);
-    }
-
-    public void offerCoor(Object coor) {
-        JsonObject responseJson = new JsonObject();
-        responseJson.addProperty("coor", coor.toString()); // assuming coor has a meaningful toString() method
-        sendResponse(responseJson);
-    }
-
     public void displayClosestDVM(ClosestDVMDto closestDVM) {
         JsonObject responseJson = new JsonObject();
+        responseJson.addProperty("stock", false);
+        responseJson.addProperty("prepayment",true);
         responseJson.addProperty("dvm_id", closestDVM.getId());
         responseJson.addProperty("coor_x", closestDVM.getX());
         responseJson.addProperty("coor_y", closestDVM.getY());

@@ -29,9 +29,7 @@ public class StockMsgManager {
         int item_code = msg_content.get("item_code").getAsInt();
         int item_num = msg_content.get("item_num").getAsInt();
 
-        // 예외처리
-        //if(!msg_type.equals("resp_stock")||item_code!=selected_code) {}
-        //if(item_num < selected_num) return null;
+        if(item_num < selected_num || !msg_type.equals("resp_stock") ||item_code!=selected_code) return null;
 
         int coor_x = msg_content.get("coor_x").getAsInt();
         int coor_y = msg_content.get("coor_y").getAsInt();

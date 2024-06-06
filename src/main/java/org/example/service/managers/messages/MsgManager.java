@@ -70,7 +70,6 @@ public class MsgManager {
             try {
                 JsonSocketService JsonRequestSocketService = connectSocket(dvm.getIp(),Integer.parseInt(dvm.getPort()));
                 CoorDto coor = stockMsgManager.request(id, dvm.getId(), item_code, item_num, JsonRequestSocketService);
-                System.out.println(coor);
                 if(coor != null) coors.add(coor);
                 JsonRequestSocketService.stop();
             } catch (Exception e) {
@@ -86,7 +85,6 @@ public class MsgManager {
             float dist = (float)Math.sqrt(Math.pow(dvm_x-x,2)+Math.pow(dvm_y-y,2));
             dvm.addSortedDVM(dvm_id, dvm_x, dvm_y,dvm_item_code, dist);
         }
-
         return dvm.getNearestDVM(item_code);
     }
 
