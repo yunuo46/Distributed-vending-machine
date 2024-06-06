@@ -125,7 +125,6 @@ public class Server {
                 Machine machine = new Machine(null, connection, exchange);
                 machine.selectItem(item_code, item_num);
             } else if ("OPTIONS".equals(exchange.getRequestMethod())) {
-                addCorsHeaders(exchange);
                 exchange.sendResponseHeaders(204, -1); // No Content
             } else {
                 exchange.sendResponseHeaders(405, -1); // Method Not Allowed
@@ -153,7 +152,6 @@ public class Server {
                 Machine machine = new Machine(null, connection, exchange);
                 machine.insertCardData(card_data, item_code, item_num);
             } else if ("OPTIONS".equals(exchange.getRequestMethod())) {
-                addCorsHeaders(exchange);
                 exchange.sendResponseHeaders(204, -1); // No Content
             } else {
                 exchange.sendResponseHeaders(405, -1); // Method Not Allowed
@@ -170,6 +168,7 @@ public class Server {
 
         @Override
         public void handle(HttpExchange exchange) throws IOException {
+            addCorsHeaders(exchange);
             if ("POST".equals(exchange.getRequestMethod())) {
                 JsonObject message = parseRequest(exchange);
                 String dvm_id = message.get("dvm_id").getAsString();
@@ -180,7 +179,6 @@ public class Server {
                 Machine machine = new Machine(null, connection, exchange);
                 machine.selectPaymentOption(dvm_id, item_code, item_num);
             } else if ("OPTIONS".equals(exchange.getRequestMethod())) {
-                addCorsHeaders(exchange);
                 exchange.sendResponseHeaders(204, -1); // No Content
             } else {
                 exchange.sendResponseHeaders(405, -1); // Method Not Allowed
