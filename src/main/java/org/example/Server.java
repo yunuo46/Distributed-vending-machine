@@ -6,16 +6,15 @@ import com.sun.net.httpserver.HttpServer;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpExchange;
 import org.example.controller.Machine;
-import org.example.service.managers.PrintManager;
 import org.example.service.socket.JsonSocketService;
 import org.example.service.socket.JsonSocketServiceImpl;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.InputStreamReader;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -43,44 +42,51 @@ public class Server {
     }
 
     private static void startSocketServer(Connection connection) {
-        try {
-            // 서버 소켓 생성 및 포트 지정
-            ServerSocket serverSocket = new ServerSocket(8888);
+        try (ServerSocket serverSocket = new ServerSocket(8888)) {
             System.out.println("Waiting for connection on port 8888...");
 
-            // 클라이언트의 연결을 대기하고 소켓을 생성
-            Socket clientSocket = serverSocket.accept();
-            System.out.println("Client connected!");
-
-            // 소켓을 이용하여 JsonSocketService 구현체 생성
-            JsonSocketService jsonSocketService = new JsonSocketServiceImpl(clientSocket);
-            jsonSocketService.start();
-
-            // 머신 생성
-            Machine machine = new Machine(jsonSocketService, connection, null);
-
-            // 클라이언트로부터 메시지 수신 및 출력
             while (true) {
-                try {
-                    JsonObject receivedMessage = jsonSocketService.receiveMessage(JsonObject.class);
-                    String msgType = receivedMessage.get("msg_type").getAsString();
-                    if (msgType.equals("req_stock")) {
-                        machine.stockResponse(receivedMessage);
-                    } else if (msgType.equals("req_prepayment")) {
-                        machine.prepaymentResponse(receivedMessage);
+                try (Socket clientSocket = serverSocket.accept()) {
+                    System.out.println("Client connected!");
+
+                    JsonSocketService jsonSocketService = new JsonSocketServiceImpl(clientSocket);
+                    jsonSocketService.start();
+                    Machine machine = new Machine(jsonSocketService, connection, null);
+
+                    while (true) {
+                        try {
+                            JsonObject receivedMessage = jsonSocketService.receiveMessage(JsonObject.class);
+                            if (receivedMessage == null) break;
+                            String msgType = receivedMessage.get("msg_type").getAsString();
+                            if (msgType.equals("req_stock")) {
+                                machine.stockResponse(receivedMessage);
+                            } else if (msgType.equals("req_prepayment")) {
+                                machine.prepaymentResponse(receivedMessage);
+                            } else {
+                                break;
+                            }
+                        } catch (Exception e) {
+                            System.out.println("Error: " + e.getMessage());
+                            break;
+                        }
                     }
+                    System.out.println("Client disconnected!");
+                } catch (SocketException se) {
+                    System.out.println("Server socket error: " + se.getMessage());
+                } catch (IOException ioe) {
+                    System.out.println("I/O error while waiting for client: " + ioe.getMessage());
                 } catch (Exception e) {
-                    e.printStackTrace();
-                    break;
+                    System.out.println("Unexpected error while waiting for client: " + e.getMessage());
                 }
             }
-
-            // 서버 종료
-            jsonSocketService.stop();
-            serverSocket.close();
-            connection.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Server error: " + e.getMessage());
+        } finally {
+            try {
+                connection.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

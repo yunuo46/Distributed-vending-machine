@@ -35,7 +35,7 @@ public class Machine {
         Card card = new Card(connection);
 
         this.saleManager = new SaleManager(stockManager, printManager, prepaymentState, card);
-        this.msgManager = new MsgManager(jsonSocketService, stockManager, printManager, saleManager, dvm, coordinate);
+        this.msgManager = new MsgManager(jsonSocketService, stockManager, saleManager, dvm, coordinate);
     }
 
     public void insertCode(String cert_code) {

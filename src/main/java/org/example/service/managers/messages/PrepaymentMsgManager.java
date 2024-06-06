@@ -14,13 +14,11 @@ import org.example.service.socket.JsonSocketService;
 
 public class PrepaymentMsgManager {
     private JsonSocketService jsonSocketService;
-    private PrintManager printManager;
     private SaleManager saleManager;
     private StockManager stockManager;
 
-    public PrepaymentMsgManager(JsonSocketService jsonSocketService, StockManager stockManager, PrintManager printManager, SaleManager saleManager) {
+    public PrepaymentMsgManager(JsonSocketService jsonSocketService, StockManager stockManager, SaleManager saleManager) {
         this.jsonSocketService = jsonSocketService;
-        this.printManager = printManager;
         this.saleManager = saleManager;
         this.stockManager = stockManager;
     }
@@ -48,7 +46,7 @@ public class PrepaymentMsgManager {
             res = new PrepaymentResFormat(id, dst_id, item_code, item_num, true);
             saleManager.processPrepayment(item_code, item_num, cert_code);
         }
-        sendMessage(res, jsonSocketService);
+        sendMessage(res, this.jsonSocketService);
     }
 
     private JsonObject sendMessage(Object message, JsonSocketService SocketService){

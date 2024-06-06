@@ -23,8 +23,8 @@ public class MsgManager {
     private final DVM dvm;
     private final int[] coordinate;
 
-    public MsgManager(JsonSocketService jsonSocketService, StockManager stockManager, PrintManager printManager, SaleManager saleManager, DVM dvm, int[] coordinate) {
-        prepaymentMsgManager = new PrepaymentMsgManager(jsonSocketService, stockManager, printManager, saleManager);
+    public MsgManager(JsonSocketService jsonSocketService, StockManager stockManager, SaleManager saleManager, DVM dvm, int[] coordinate) {
+        prepaymentMsgManager = new PrepaymentMsgManager(jsonSocketService, stockManager, saleManager);
         stockMsgManager = new StockMsgManager(jsonSocketService, stockManager);
         this.dvm = dvm;
         this.coordinate = coordinate;
