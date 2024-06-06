@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 public class PrepaymentResFormat extends MainFormat {
     public PrepaymentResFormat(String src_id, String dst_id, int item_code, int item_num, boolean availability) {
-        this.msg_type = "req_prepay";
+        this.msg_type = "res_prepay";
         this.src_id = src_id;
         this.dst_id = dst_id;
 

@@ -35,7 +35,10 @@ public class Machine {
     }
 
     public void selectItem(int item_code, int item_num) {
-        saleManager.offerItem(item_code, item_num);
+        boolean isStock = saleManager.offerItem(item_code, item_num);
+        if(!isStock){
+            msgManager.stockRequest(id, item_code, item_num);
+        }
     }
 
     public void selectPaymentOption(boolean option) {
@@ -44,10 +47,6 @@ public class Machine {
 
     public void insertCardData(String card_id, int item_code, int item_num) {
         saleManager.checkCardData(card_id, item_code,item_num);
-    }
-
-    public void stockRequest(JsonObject message){
-        //stockMsgManager.request();
     }
 
     public void stockResponse(JsonObject message){

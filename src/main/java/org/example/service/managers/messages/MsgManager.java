@@ -14,16 +14,12 @@ public class MsgManager {
         stockMsgManager = new StockMsgManager(jsonSocketService, stockManager);
     }
 
-    protected Object[] sortedDst;
-    protected String cert_code;
-    protected Object[] other_DVMs;
-
     public void makeCode() {
         // TODO implement here
     }
 
     public void addDVM(String id, String ip, int port) {
-        // TODO implement here
+
     }
 
     public void removeDVM(String id) {
@@ -36,5 +32,8 @@ public class MsgManager {
 
     public void prepaymentResponse(String dst_id, String src_id, int item_code, int item_num, String cert_code) {
         this.prepaymentMsgManager.response(dst_id, src_id, item_code, item_num, cert_code);
+    }
+
+    public void stockRequest(String id, int item_code, int item_num) {
     }
 }

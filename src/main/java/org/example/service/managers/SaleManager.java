@@ -26,13 +26,12 @@ public class SaleManager {
         // TODO implement here
     }
 
-    public void offerItem(int selected_code, int selected_num) {
+    public boolean offerItem(int selected_code, int selected_num) {
         int stock_num = stockManager.checkStock(selected_code, selected_num);
         if(stock_num > 0) {
             printManager.offerItem();
-        }else{
-
-        }
+            return true;
+        }else return false;
     }
 
     public void checkCardData(String card_id, int item_code, int item_num) {
