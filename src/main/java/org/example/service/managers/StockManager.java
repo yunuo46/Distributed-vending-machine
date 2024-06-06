@@ -12,22 +12,18 @@ public class StockManager {
     }
 
     private int total_stock;
-    private int MAX_CNT;
+    private int MAX_CNT = 10;
 
 
     public int checkStock(int item_code, int item_num) {
-        if(MAX_CNT >= item_num) return 0;
+        if(MAX_CNT < item_num) return 0;
         else return stock.checkStock(item_code);
     }
 
     public void saleStock(int item_code, int item_num) {
-        // TODO implement here
+        stock.saleStock(item_code, item_num);
     }
 
-    /**
-     * @param item_code
-     * @param item_num
-     */
     public void editStock(int item_code, int item_num) {
         // TODO implement here
     }

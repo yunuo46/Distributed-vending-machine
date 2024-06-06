@@ -7,7 +7,7 @@ import org.example.service.managers.StockManager;
 import org.example.service.managers.messages.format.Stock.StockResFormat;
 import org.example.service.socket.JsonSocketService;
 
-public class StockMsgManager extends MsgManager {
+public class StockMsgManager {
     private JsonSocketService jsonSocketService;
     private StockManager stockManager;
 
@@ -24,8 +24,12 @@ public class StockMsgManager extends MsgManager {
         int stock_num = stockManager.checkStock(item_code, item_num);
         int[] coorArr = (int[])coor;
         StockResFormat res = new StockResFormat(id, dst_id, item_code, stock_num, coorArr[0],coorArr[1]);
+        sendMessage(res);
+    }
+
+    private void sendMessage(Object message){
         Gson gson = new Gson();
-        String jsonStr = gson.toJson(res);
+        String jsonStr = gson.toJson(message);
         JsonObject jsonObj = JsonParser.parseString(jsonStr).getAsJsonObject();
         jsonSocketService.sendMessage(jsonObj);
     }

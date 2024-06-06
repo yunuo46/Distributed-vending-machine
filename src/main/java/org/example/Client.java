@@ -17,7 +17,7 @@ public class Client {
             JsonSocketService jsonSocketService = new JsonSocketServiceImpl(socket);
             jsonSocketService.start();
 
-            Gson gson = new Gson();
+            // Example 1 (request Stock)
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("msg_type", "req_stock");
             jsonObject.addProperty("src_id", "Team1");
@@ -25,15 +25,32 @@ public class Client {
 
             JsonObject msg_content = new JsonObject();
             msg_content.addProperty("item_code", "02");
-            msg_content.addProperty("item_num", "4");
+            msg_content.addProperty("item_num", "20");
 
             jsonObject.add("msg_content", msg_content);
-            // 서버로 메시지 전송
+
             jsonSocketService.sendMessage(jsonObject);
 
-            // 서버로부터 메세지 응답
             JsonObject receivedMessage = jsonSocketService.receiveMessage(JsonObject.class);
             System.out.println(receivedMessage);
+
+            // Example 2 (request Prepayment)
+            JsonObject jsonObject2 = new JsonObject();
+            jsonObject2.addProperty("msg_type", "req_prepayment");
+            jsonObject2.addProperty("src_id", "Team1");
+            jsonObject2.addProperty("dst_id", "Team9");
+
+            JsonObject msg_content2 = new JsonObject();
+            msg_content2.addProperty("item_code", "01");
+            msg_content2.addProperty("item_num", "20");
+            msg_content2.addProperty("cert_code", "test_code");
+
+            jsonObject2.add("msg_content", msg_content2);
+
+            jsonSocketService.sendMessage(jsonObject2);
+
+            JsonObject receivedMessage2 = jsonSocketService.receiveMessage(JsonObject.class);
+            System.out.println(receivedMessage2);
 
             // 클라이언트 종료
             jsonSocketService.stop();

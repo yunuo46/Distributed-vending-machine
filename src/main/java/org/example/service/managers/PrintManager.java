@@ -1,11 +1,11 @@
 package org.example.service.managers;
+import org.example.service.socket.JsonSocketService;
 
 public class PrintManager {
+    private JsonSocketService jsonSocketService; ;
 
-    /**
-     * Default constructor
-     */
-    public PrintManager() {
+    public PrintManager(JsonSocketService jsonSocketService) {
+        this.jsonSocketService = jsonSocketService;
     }
 
     /**
