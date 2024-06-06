@@ -147,6 +147,8 @@ public class Server {
             exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
             exchange.getResponseHeaders().add("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
             exchange.getResponseHeaders().add("Access-Control-Allow-Headers", "Content-Type, Authorization");
+            exchange.getResponseHeaders().add("Access-Control-Expose-Headers", "Content-Length,Content-Type");
+            exchange.getResponseHeaders().add("Access-Control-Allow-Credentials", "true");
         }
     }
 }
