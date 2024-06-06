@@ -108,6 +108,7 @@ public class Server {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
             if ("POST".equals(exchange.getRequestMethod())) {
+                addCorsHeaders(exchange);
                 JsonObject message = parseRequest(exchange);
                 int item_code = message.get("item_code").getAsInt();
                 int item_num = message.get("item_num").getAsInt();
@@ -117,6 +118,9 @@ public class Server {
                 jsonResponse.addProperty("stock", false);
                 jsonResponse.addProperty("prepayment", false);
                 sendJsonResponse(exchange, jsonResponse);
+            } else if ("OPTIONS".equals(exchange.getRequestMethod())) {
+                addCorsHeaders(exchange);
+                exchange.sendResponseHeaders(204, -1); // No Content
             } else {
                 exchange.sendResponseHeaders(405, -1); // Method Not Allowed
             }
@@ -131,10 +135,17 @@ public class Server {
 
         private void sendJsonResponse(HttpExchange exchange, JsonObject jsonResponse) throws IOException {
             String response = jsonResponse.toString();
+            exchange.getResponseHeaders().set("Content-Type", "application/json");
             exchange.sendResponseHeaders(200, response.getBytes().length);
             OutputStream os = exchange.getResponseBody();
             os.write(response.getBytes());
             os.close();
+        }
+
+        private void addCorsHeaders(HttpExchange exchange) {
+            exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
+            exchange.getResponseHeaders().add("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+            exchange.getResponseHeaders().add("Access-Control-Allow-Headers", "Content-Type, Authorization");
         }
     }
 }
