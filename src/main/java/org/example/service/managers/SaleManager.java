@@ -6,11 +6,13 @@ import org.example.model.PrepaymentState;
 public class SaleManager {
     private int total_sales;
     private StockManager stockManager;
+    private PrintManager printManager;
     private PrepaymentState prepaymentState;
     private Card card;
 
-    public SaleManager(StockManager stockManager, PrepaymentState prepaymentState, Card card) {
+    public SaleManager(StockManager stockManager, PrintManager printManager, PrepaymentState prepaymentState, Card card) {
         this.stockManager = stockManager;
+        this.printManager = printManager;
         this.prepaymentState = prepaymentState;
         this.card = card;
     }
@@ -26,7 +28,12 @@ public class SaleManager {
 
     public void offerItem(int selected_code, int selected_num) {
         int stock_num = stockManager.checkStock(selected_code, selected_num);
-        System.out.println(stock_num);
+        if(stock_num > 0) {
+            printManager.offerItem();
+            stockManager.saleStock(selected_code, selected_num);
+        }else{
+
+        }
     }
 
     public void checkCardData(String card_id, int price) {

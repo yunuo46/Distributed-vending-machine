@@ -6,6 +6,7 @@ import com.sun.net.httpserver.HttpServer;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpExchange;
 import org.example.controller.Machine;
+import org.example.service.managers.PrintManager;
 import org.example.service.socket.JsonSocketService;
 import org.example.service.socket.JsonSocketServiceImpl;
 
@@ -56,7 +57,7 @@ public class Server {
             jsonSocketService.start();
 
             // 머신 생성
-            Machine machine = new Machine(jsonSocketService, connection);
+            Machine machine = new Machine(jsonSocketService, connection, null);
 
             // 클라이언트로부터 메시지 수신 및 출력
             while (true) {
@@ -87,9 +88,8 @@ public class Server {
         try {
             // HTTP 서버 생성 및 포트 지정
             HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
-            Machine machine = new Machine(null, connection);
 
-            server.createContext("/api/select", new SelectItemHandler(machine));
+            server.createContext("/api/select", new SelectItemHandler(connection));
             server.setExecutor(null);
             server.start();
             System.out.println("HTTP Server started on port 8080");
@@ -99,27 +99,24 @@ public class Server {
     }
 
     static class SelectItemHandler implements HttpHandler {
-        private final Machine machine;
+        private final Connection connection;
 
-        public SelectItemHandler(Machine machine) {
-            this.machine = machine;
+        public SelectItemHandler(Connection connection) {
+            this.connection = connection;
         }
 
         @Override
         public void handle(HttpExchange exchange) throws IOException {
+            addCorsHeaders(exchange);
             if ("POST".equals(exchange.getRequestMethod())) {
-                addCorsHeaders(exchange);
                 JsonObject message = parseRequest(exchange);
                 int item_code = message.get("item_code").getAsInt();
                 int item_num = message.get("item_num").getAsInt();
-                machine.selectItem(item_code, item_num);
 
-                JsonObject jsonResponse = new JsonObject();
-                jsonResponse.addProperty("stock", false);
-                jsonResponse.addProperty("prepayment", false);
-                sendJsonResponse(exchange, jsonResponse);
+                // Machine 생성
+                Machine machine = new Machine(null, connection, exchange);
+                machine.selectItem(item_code, item_num);
             } else if ("OPTIONS".equals(exchange.getRequestMethod())) {
-                addCorsHeaders(exchange);
                 exchange.sendResponseHeaders(204, -1); // No Content
             } else {
                 exchange.sendResponseHeaders(405, -1); // Method Not Allowed
@@ -131,15 +128,6 @@ public class Server {
             JsonObject message = JsonParser.parseReader(isr).getAsJsonObject();
             isr.close();
             return message;
-        }
-
-        private void sendJsonResponse(HttpExchange exchange, JsonObject jsonResponse) throws IOException {
-            String response = jsonResponse.toString();
-            exchange.getResponseHeaders().set("Content-Type", "application/json");
-            exchange.sendResponseHeaders(200, response.getBytes().length);
-            OutputStream os = exchange.getResponseBody();
-            os.write(response.getBytes());
-            os.close();
         }
 
         private void addCorsHeaders(HttpExchange exchange) {

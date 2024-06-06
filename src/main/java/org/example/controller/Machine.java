@@ -1,6 +1,7 @@
 package org.example.controller;
 
 import com.google.gson.JsonObject;
+import com.sun.net.httpserver.HttpExchange;
 import org.example.model.Card;
 import org.example.model.PrepaymentState;
 import org.example.service.managers.PrintManager;
@@ -20,15 +21,15 @@ public class Machine {
     private MsgManager msgManager;
     private SaleManager saleManager;
 
-    public Machine(JsonSocketService jsonSocketService, Connection connection) {
+    public Machine(JsonSocketService jsonSocketService, Connection connection, HttpExchange exchange) {
         this.coordinate = new int[]{0, 0}; // 기본 좌표를 (0, 0)으로 초기화
 
         StockManager stockManager = new StockManager(connection);
-        PrintManager printManager = new PrintManager(jsonSocketService);
+        PrintManager printManager = new PrintManager(exchange);
         PrepaymentState prepaymentState = new PrepaymentState(connection);
         Card card = new Card(connection);
 
-        this.saleManager = new SaleManager(stockManager, prepaymentState, card);
+        this.saleManager = new SaleManager(stockManager, printManager, prepaymentState, card);
         this.msgManager = new MsgManager(jsonSocketService, stockManager, printManager, this.saleManager);
     }
 
