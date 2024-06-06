@@ -60,7 +60,7 @@ public class Server {
                             String msgType = receivedMessage.get("msg_type").getAsString();
                             if (msgType.equals("req_stock")) {
                                 machine.stockResponse(receivedMessage);
-                            } else if (msgType.equals("req_prepayment")) {
+                            } else if (msgType.equals("req_prepay")) {
                                 machine.prepaymentResponse(receivedMessage);
                             } else {
                                 break;
