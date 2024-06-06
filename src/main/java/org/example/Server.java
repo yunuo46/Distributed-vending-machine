@@ -119,6 +119,7 @@ public class Server {
                 jsonResponse.addProperty("prepayment", false);
                 sendJsonResponse(exchange, jsonResponse);
             } else if ("OPTIONS".equals(exchange.getRequestMethod())) {
+                addCorsHeaders(exchange);
                 exchange.sendResponseHeaders(204, -1); // No Content
             } else {
                 exchange.sendResponseHeaders(405, -1); // Method Not Allowed
@@ -135,7 +136,6 @@ public class Server {
         private void sendJsonResponse(HttpExchange exchange, JsonObject jsonResponse) throws IOException {
             String response = jsonResponse.toString();
             exchange.getResponseHeaders().set("Content-Type", "application/json");
-            addCorsHeaders(exchange);
             exchange.sendResponseHeaders(200, response.getBytes().length);
             OutputStream os = exchange.getResponseBody();
             os.write(response.getBytes());
