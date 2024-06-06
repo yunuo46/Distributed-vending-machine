@@ -136,6 +136,7 @@ public class Server {
         private void sendJsonResponse(HttpExchange exchange, JsonObject jsonResponse) throws IOException {
             String response = jsonResponse.toString();
             exchange.getResponseHeaders().set("Content-Type", "application/json");
+            addCorsHeaders(exchange);
             exchange.sendResponseHeaders(200, response.getBytes().length);
             OutputStream os = exchange.getResponseBody();
             os.write(response.getBytes());
