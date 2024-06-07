@@ -4,9 +4,9 @@ public class CoorDto {
     private String dst_id;
     private int coor_x;
     private int coor_y;
-    private int item_code;
+    private String item_code;
 
-    public CoorDto(String dst_id, int coor_x, int coor_y, int item_code) {
+    public CoorDto(String dst_id, int coor_x, int coor_y, String item_code) {
         this.dst_id = dst_id;
         this.coor_x = coor_x;
         this.coor_y = coor_y;
@@ -25,7 +25,7 @@ public class CoorDto {
         return coor_y;
     }
 
-    public int getItemCode() {
+    public String getItemCode() {
         return item_code;
     }
 }

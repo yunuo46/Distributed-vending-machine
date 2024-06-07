@@ -22,14 +22,17 @@ public class StockMsgManager {
     }
 
     public CoorDto request(String id, String dst_id, int selected_code, int selected_num, JsonSocketService jsonRequestSocketService) {
-        StockReqFormat req = new StockReqFormat(id, dst_id, selected_code, selected_num);
+        String StrItemCode = String.valueOf(selected_code);
+        String result = "0" + StrItemCode;
+        System.out.println("result : " + result);
+        StockReqFormat req = new StockReqFormat(id, dst_id, StrItemCode, selected_num);
         JsonObject receivedMessage = sendMessage(req, jsonRequestSocketService);
         String msg_type = receivedMessage.get("msg_type").getAsString();
         JsonObject msg_content = receivedMessage.get("msg_content").getAsJsonObject();
-        int item_code = msg_content.get("item_code").getAsInt();
+        String item_code = msg_content.get("item_code").getAsString();
         int item_num = msg_content.get("item_num").getAsInt();
 
-        if(item_num < selected_num || !msg_type.equals("resp_stock") ||item_code!=selected_code) return null;
+        if(item_num < selected_num || !msg_type.equals("resp_stock")) return null;
 
         int coor_x = msg_content.get("coor_x").getAsInt();
         int coor_y = msg_content.get("coor_y").getAsInt();
@@ -41,7 +44,7 @@ public class StockMsgManager {
         int[] coorArr = (int[])coor;
         String StrItemCode = String.valueOf(item_code);
         String result = "0" + StrItemCode;
-        System.out.println(result);
+        System.out.println("result : " + result);
         StockResFormat res = new StockResFormat(id, dst_id, result, stock_num, coorArr[0],coorArr[1]);
         sendMessage(res, this.jsonSocketService);
     }

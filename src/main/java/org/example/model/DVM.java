@@ -74,13 +74,13 @@ public class DVM {
         return dvmList;
     }
 
-    public void addSortedDVM(String dvmId, int dvmX, int dvmY, int dvmItemCode, float dist) {
+    public void addSortedDVM(String dvmId, int dvmX, int dvmY, String dvmItemCode, float dist) {
         String sql = "INSERT INTO dvm (id, x, y, item_code, distance) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setString(1, dvmId);
             pstmt.setInt(2, dvmX);
             pstmt.setInt(3, dvmY);
-            pstmt.setInt(4, dvmItemCode);
+            pstmt.setInt(4, Integer.parseInt(dvmItemCode));
             pstmt.setFloat(5, dist);
             pstmt.executeUpdate();
         } catch (SQLException e) {

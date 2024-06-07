@@ -85,7 +85,7 @@ public class MsgManager {
             String dvm_id = coor.getDstId();
             int dvm_x = coor.getCoorX();
             int dvm_y = coor.getCoorY();
-            int dvm_item_code = coor.getItemCode();
+            String dvm_item_code = coor.getItemCode();
             float dist = (float)Math.sqrt(Math.pow(dvm_x-x,2)+Math.pow(dvm_y-y,2));
             System.out.println("dvm_id: "+dvm_id+"dist: "+dist);
             dvm.addSortedDVM(dvm_id, dvm_x, dvm_y,dvm_item_code, dist);
