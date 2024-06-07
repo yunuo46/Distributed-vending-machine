@@ -51,6 +51,7 @@ public class JsonSocketServiceImpl implements JsonSocketService {
     public <T> T receiveMessage(Class<T> clazz) {
         try {
             System.out.println(reader.readLine());
+            System.out.println("gson.fromJson : " + gson.fromJson(reader.readLine(), clazz));
             return gson.fromJson(reader.readLine(), clazz);
         } catch (Exception e) {
             throw new RuntimeException("Error receiving message", e);
