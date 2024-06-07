@@ -24,7 +24,8 @@ public class PrepaymentMsgManager {
     }
 
     public boolean request(String id, String dst_id, int selected_code, int selected_num, String cert_code, JsonSocketService jsonRequestSocketService) {
-        PrepaymentReqFormat req = new PrepaymentReqFormat(id, dst_id, selected_code, selected_num, cert_code);
+        String strItem = String.valueOf(selected_code);
+        PrepaymentReqFormat req = new PrepaymentReqFormat(id, dst_id, strItem, selected_num, cert_code);
         JsonObject receivedMessage = sendMessage(req, jsonRequestSocketService);
 
         String msg_type = receivedMessage.get("msg_type").getAsString();
