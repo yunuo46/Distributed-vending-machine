@@ -39,7 +39,10 @@ public class StockMsgManager {
     public void response(String id, String dst_id, Object coor, int item_code, int item_num) {
         int stock_num = stockManager.checkStock(item_code, item_num);
         int[] coorArr = (int[])coor;
-        StockResFormat res = new StockResFormat(id, dst_id, item_code, stock_num, coorArr[0],coorArr[1]);
+        String StrItemCode = String.valueOf(item_code);
+        String result = "0" + StrItemCode;
+        System.out.println(result);
+        StockResFormat res = new StockResFormat(id, dst_id, result, stock_num, coorArr[0],coorArr[1]);
         sendMessage(res, this.jsonSocketService);
     }
 
