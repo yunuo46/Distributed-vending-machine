@@ -2,6 +2,7 @@ package org.example.service.socket;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -53,7 +54,12 @@ public class JsonSocketServiceImpl implements JsonSocketService {
             System.out.println(reader.readLine());
             System.out.println("gson.fromJson : " + gson.fromJson(reader.readLine(), JsonObject.class));
 
-            return gson.fromJson(reader.readLine(), JsonObject.class);
+            JsonParser parser = new JsonParser();
+
+            JsonObject jsonObject = parser.parse(reader.readLine()).getAsJsonObject();
+
+            System.out.println("Json parser: " + jsonObject);
+            return jsonObject;
         } catch (Exception e) {
             throw new RuntimeException("Error receiving message", e);
         }
