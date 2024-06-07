@@ -42,6 +42,8 @@ public class JsonSocketServiceImpl implements JsonSocketService {
 
     @Override
     public void sendMessage(JsonObject message) {
+        System.out.println(message);
+        System.out.println(gson.toJson(message));
         writer.println(gson.toJson(message));
     }
 
