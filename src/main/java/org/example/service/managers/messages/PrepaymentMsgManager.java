@@ -57,6 +57,6 @@ public class PrepaymentMsgManager {
         String jsonStr = gson.toJson(message);
         JsonObject jsonObj = JsonParser.parseString(jsonStr).getAsJsonObject();
         SocketService.sendMessage(jsonObj);
-        return SocketService.receiveMessage(JsonObject.class);
+        return SocketService.receiveMessage();
     }
 }

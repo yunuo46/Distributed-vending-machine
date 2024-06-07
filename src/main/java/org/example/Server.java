@@ -55,7 +55,7 @@ public class Server {
 
                     while (true) {
                         try {
-                            JsonObject receivedMessage = jsonSocketService.receiveMessage(JsonObject.class);
+                            JsonObject receivedMessage = jsonSocketService.receiveMessage();
                             if (receivedMessage == null) break;
                             String msgType = receivedMessage.get("msg_type").getAsString();
                             if (msgType.equals("req_stock")) {
