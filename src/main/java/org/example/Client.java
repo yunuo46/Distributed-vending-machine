@@ -38,7 +38,7 @@ public class Client {
 
             // Example 2 (request Prepayment)
             JsonObject jsonObject2 = new JsonObject();
-            jsonObject2.addProperty("msg_type", "req_prepayment");
+            jsonObject2.addProperty("msg_type", "req_prepay");
             jsonObject2.addProperty("src_id", "Team1");
             jsonObject2.addProperty("dst_id", "Team9");
 
