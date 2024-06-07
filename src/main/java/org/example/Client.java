@@ -51,7 +51,7 @@ public class Client {
 
             jsonSocketService.sendMessage(jsonObject2);
 
-            JsonObject receivedMessage2 = jsonSocketService.receiveMessage(JsonObject.class);
+            JsonObject receivedMessage2 = jsonSocketService.receiveMessage();
             System.out.println(receivedMessage2);
 
             // 클라이언트 종료

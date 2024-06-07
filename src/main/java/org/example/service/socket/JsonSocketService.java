@@ -6,5 +6,5 @@ public interface JsonSocketService {
     void start();
     void stop();
     void sendMessage(JsonObject message);
-    <T> T receiveMessage(Class<T> clazz);
+    JsonObject receiveMessage();
 }

@@ -48,11 +48,12 @@ public class JsonSocketServiceImpl implements JsonSocketService {
     }
 
     @Override
-    public <T> T receiveMessage(Class<T> clazz) {
+    public JsonObject receiveMessage() {
         try {
             System.out.println(reader.readLine());
-            System.out.println("gson.fromJson : " + gson.fromJson(reader.readLine(), clazz));
-            return gson.fromJson(reader.readLine(), clazz);
+            System.out.println("gson.fromJson : " + gson.fromJson(reader.readLine(), JsonObject.class));
+
+            return gson.fromJson(reader.readLine(), JsonObject.class);
         } catch (Exception e) {
             throw new RuntimeException("Error receiving message", e);
         }
