@@ -1,11 +1,11 @@
 package org.example.service.managers.messages;
 
 import org.example.model.DVM;
+import org.example.model.SortedDVM;
 import org.example.model.dto.ClosestDVMDto;
 import org.example.model.dto.CoorDto;
 import org.example.model.dto.DVMDto;
 import org.example.model.dto.PrepaymentDto;
-import org.example.service.managers.PrintManager;
 import org.example.service.managers.SaleManager;
 import org.example.service.managers.StockManager;
 import org.example.service.socket.JsonSocketService;
@@ -21,12 +21,14 @@ public class MsgManager {
     private PrepaymentMsgManager prepaymentMsgManager;
     private StockMsgManager stockMsgManager;
     private final DVM dvm;
+    private final SortedDVM sortedDVM;
     private final int[] coordinate;
 
-    public MsgManager(JsonSocketService jsonSocketService, StockManager stockManager, SaleManager saleManager, DVM dvm, int[] coordinate) {
+    public MsgManager(JsonSocketService jsonSocketService, StockManager stockManager, SaleManager saleManager, DVM dvm, SortedDVM sortedDVM, int[] coordinate) {
         prepaymentMsgManager = new PrepaymentMsgManager(jsonSocketService, stockManager, saleManager);
         stockMsgManager = new StockMsgManager(jsonSocketService, stockManager);
         this.dvm = dvm;
+        this.sortedDVM = sortedDVM;
         this.coordinate = coordinate;
     }
 
@@ -88,9 +90,9 @@ public class MsgManager {
             String dvm_item_code = coor.getItemCode();
             float dist = (float)Math.sqrt(Math.pow(dvm_x-x,2)+Math.pow(dvm_y-y,2));
             System.out.println("dvm_id: "+dvm_id+"dist: "+dist);
-            dvm.addSortedDVM(dvm_id, dvm_x, dvm_y,dvm_item_code, dist);
+            sortedDVM.addSortedDVM(dvm_id, dvm_x, dvm_y,dvm_item_code, dist);
         }
-        return dvm.getNearestDVM(item_code);
+        return sortedDVM.getNearestDVM(item_code);
     }
 
     public PrepaymentDto prepaymentRequest(String id, String dst_id, int item_code, int item_num) throws IOException {

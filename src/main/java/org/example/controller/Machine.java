@@ -5,6 +5,7 @@ import com.sun.net.httpserver.HttpExchange;
 import org.example.model.Card;
 import org.example.model.DVM;
 import org.example.model.PrepaymentState;
+import org.example.model.SortedDVM;
 import org.example.model.dto.ClosestDVMDto;
 import org.example.model.dto.PrepaymentDto;
 import org.example.service.managers.PrintManager;
@@ -23,19 +24,21 @@ public class Machine {
     private final SaleManager saleManager;
     private final PrintManager printManager;
     private final DVM dvm;
+    private final SortedDVM sortedDvm;
 
     public Machine(JsonSocketService jsonSocketService, Connection connection, HttpExchange exchange) {
         id = System.getenv("MACHINE_ID");
         coordinate = new int[]{Integer.parseInt(System.getenv("X")), Integer.parseInt(System.getenv("Y"))}; // 기본 좌표를 (0, 0)으로 초기화
         printManager = new PrintManager(exchange);
         dvm = new DVM(connection);
+        sortedDvm = new SortedDVM(connection);
 
         StockManager stockManager = new StockManager(connection);
         PrepaymentState prepaymentState = new PrepaymentState(connection);
         Card card = new Card(connection);
 
         this.saleManager = new SaleManager(stockManager, printManager, prepaymentState, card);
-        this.msgManager = new MsgManager(jsonSocketService, stockManager, saleManager, dvm, coordinate);
+        this.msgManager = new MsgManager(jsonSocketService, stockManager, saleManager, dvm, sortedDvm, coordinate);
 
         System.out.println("Machine Info: "+ this.id + "{" +this.coordinate[0]+", "+this.coordinate[1] + "}");
     }
@@ -67,7 +70,7 @@ public class Machine {
             System.out.println("prepayment successful");
             printManager.displayPrepayment(prepaymentDto.getCertCode());
         }else{
-            ClosestDVMDto closestDVMDto = dvm.getNearestDVM(item_code);
+            ClosestDVMDto closestDVMDto = sortedDvm.getNearestDVM(item_code);
             if(closestDVMDto == null){
                 System.out.println("prepayment failed");
                 printManager.displayNextDVM(null,0,0);
