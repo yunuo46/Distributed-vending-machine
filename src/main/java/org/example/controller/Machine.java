@@ -108,8 +108,8 @@ public class Machine {
     }
 
     public void editStock(String item_code, int item_num) {
-        stockManager.editStock(item_code, item_num);
-        printManager.displayEditStock();
+        boolean success = stockManager.editStock(item_code, item_num);
+        printManager.displayEditStock(success);
     }
 
     public void addDVM(String id, String ip, String port) {
