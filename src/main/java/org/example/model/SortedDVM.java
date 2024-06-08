@@ -37,7 +37,7 @@ public class SortedDVM {
             pstmt.setString(1, dvmId);
             pstmt.setInt(2, dvmX);
             pstmt.setInt(3, dvmY);
-            pstmt.setInt(4, Integer.parseInt(dvmItemCode));
+            pstmt.setString(4, dvmItemCode);
             pstmt.setFloat(5, dist);
             pstmt.executeUpdate();
         } catch (SQLException e) {
