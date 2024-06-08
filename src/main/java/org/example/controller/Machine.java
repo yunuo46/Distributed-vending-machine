@@ -25,8 +25,8 @@ public class Machine {
     private final DVM dvm;
 
     public Machine(JsonSocketService jsonSocketService, Connection connection, HttpExchange exchange) {
-        id = "Team9";
-        coordinate = new int[]{7, 17}; // 기본 좌표를 (0, 0)으로 초기화
+        id = System.getenv("MACHINE_ID");
+        coordinate = new int[]{Integer.parseInt(System.getenv("X")), Integer.parseInt(System.getenv("Y"))}; // 기본 좌표를 (0, 0)으로 초기화
         printManager = new PrintManager(exchange);
         dvm = new DVM(connection);
 
@@ -36,6 +36,8 @@ public class Machine {
 
         this.saleManager = new SaleManager(stockManager, printManager, prepaymentState, card);
         this.msgManager = new MsgManager(jsonSocketService, stockManager, saleManager, dvm, coordinate);
+
+        System.out.println("Machine Info: "+ this.id + "{" +this.coordinate[0]+", "+this.coordinate[1] + "}");
     }
 
     public void insertCode(String cert_code) {

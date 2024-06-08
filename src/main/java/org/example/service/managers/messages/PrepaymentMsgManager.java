@@ -26,7 +26,8 @@ public class PrepaymentMsgManager {
     public boolean request(String id, String dst_id, int selected_code, int selected_num, String cert_code, JsonSocketService jsonRequestSocketService) {
         String strItem = String.valueOf(selected_code);
         PrepaymentReqFormat req = new PrepaymentReqFormat(id, dst_id, strItem, selected_num, cert_code);
-        JsonObject receivedMessage = sendMessage(req, jsonRequestSocketService);
+        Gson gson = new Gson();
+        JsonObject receivedMessage = gson.fromJson(sendMessage(req, jsonRequestSocketService), JsonObject.class);
 
         String msg_type = receivedMessage.get("msg_type").getAsString();
         JsonObject msg_content = receivedMessage.get("msg_content").getAsJsonObject();
@@ -52,11 +53,11 @@ public class PrepaymentMsgManager {
         sendMessage(res, this.jsonSocketService);
     }
 
-    private JsonObject sendMessage(Object message, JsonSocketService SocketService){
+    private String sendMessage(Object message, JsonSocketService SocketService){
         Gson gson = new Gson();
         String jsonStr = gson.toJson(message);
         JsonObject jsonObj = JsonParser.parseString(jsonStr).getAsJsonObject();
-        SocketService.sendMessage(jsonObj);
-        return SocketService.receiveMessage();
+        SocketService.sendMessage(jsonObj.toString());
+        return SocketService.receiveMessage().toString();
     }
 }

@@ -1,5 +1,6 @@
 package org.example;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.sun.net.httpserver.HttpServer;
@@ -42,6 +43,7 @@ public class Server {
     }
 
     private static void startSocketServer(Connection connection) {
+        Gson gson = new Gson();
         try (ServerSocket serverSocket = new ServerSocket(8888)) {
             System.out.println("Waiting for connection on port 8888...");
 
@@ -55,7 +57,7 @@ public class Server {
 
                     while (true) {
                         try {
-                            JsonObject receivedMessage = jsonSocketService.receiveMessage();
+                            JsonObject receivedMessage = gson.fromJson(jsonSocketService.receiveMessage(),JsonObject.class);
                             if (receivedMessage == null) break;
                             String msgType = receivedMessage.get("msg_type").getAsString();
                             if (msgType.equals("req_stock")) {
@@ -68,7 +70,6 @@ public class Server {
                                 break;
                             }
                         } catch (Exception e) {
-                            System.out.println("Error: " + e.getMessage());
                             break;
                         }
                     }

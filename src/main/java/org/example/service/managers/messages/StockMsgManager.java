@@ -26,7 +26,8 @@ public class StockMsgManager {
         String result = "0" + StrItemCode;
         System.out.println("result : " + result);
         StockReqFormat req = new StockReqFormat(id, dst_id, StrItemCode, selected_num);
-        JsonObject receivedMessage = sendMessage(req, jsonRequestSocketService);
+        Gson gson = new Gson();
+        JsonObject receivedMessage = gson.fromJson(sendMessage(req, jsonRequestSocketService), JsonObject.class);
         String msg_type = receivedMessage.get("msg_type").getAsString();
         JsonObject msg_content = receivedMessage.get("msg_content").getAsJsonObject();
         String item_code = msg_content.get("item_code").getAsString();
@@ -49,11 +50,11 @@ public class StockMsgManager {
         sendMessage(res, this.jsonSocketService);
     }
 
-    private JsonObject sendMessage(Object message, JsonSocketService SocketService){
+    private String sendMessage(Object message, JsonSocketService SocketService){
         Gson gson = new Gson();
         String jsonStr = gson.toJson(message);
         JsonObject jsonObj = JsonParser.parseString(jsonStr).getAsJsonObject();
-        SocketService.sendMessage(jsonObj);
-        return SocketService.receiveMessage();
+        SocketService.sendMessage(jsonObj.toString());
+        return SocketService.receiveMessage().toString();
     }
 }

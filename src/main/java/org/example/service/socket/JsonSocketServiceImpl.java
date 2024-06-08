@@ -42,22 +42,18 @@ public class JsonSocketServiceImpl implements JsonSocketService {
     }
 
     @Override
-    public void sendMessage(JsonObject message) {
-        System.out.println(message);
-        System.out.println(gson.toJson(message));
-        writer.println(gson.toJson(message));
+    public void sendMessage(String message) {
+        System.out.println("sendMessage: " + message);
+        writer.println(message);
     }
 
     @Override
-    public JsonObject receiveMessage() {
+    public String receiveMessage() {
         try {
-            System.out.println(reader.readLine());
-            System.out.println("gson.fromJson : " + gson.fromJson(reader.readLine(), JsonObject.class));
-
-            JsonObject jsonObject = gson.fromJson(gson.toJson(reader.readLine()), JsonObject.class);
-            System.out.println("Json parser: " + jsonObject);
-
-            return jsonObject;
+            String received = reader.readLine().toString();
+            JsonObject jsonObject = gson.fromJson(received, JsonObject.class);
+            System.out.println("received message : " + jsonObject.toString());
+            return jsonObject.toString();
         } catch (Exception e) {
             throw new RuntimeException("Error receiving message", e);
         }
