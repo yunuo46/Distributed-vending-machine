@@ -45,7 +45,7 @@ public class Machine {
     }
 
     public void insertCode(String cert_code) {
-        // TODO implement here
+        saleManager.offerPrepaidItem(cert_code);
     }
 
     public void selectItem(String item_code, int item_num) {

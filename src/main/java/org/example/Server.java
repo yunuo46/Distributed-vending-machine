@@ -99,11 +99,12 @@ public class Server {
             HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
 
             server.createContext("/api/select", new SelectItemHandler(connection));
-            server.createContext("/api/payment", new insertCardHandler(connection));
+            server.createContext("/api/payment", new InsertCardHandler(connection));
             server.createContext("/api/prepayment", new ProcessPrePaymentHandler(connection));
-            server.createContext("api/admin/stock", new ManageStockHandler(connection));
-            server.createContext("api/admin/add-dvm", new AddDVMHandler(connection));
-            server.createContext("api/admin/remove-dvm", new RemoveDVMHandler(connection));
+            server.createContext("/api/code", new InsertCodeHandler(connection));
+            server.createContext("/api/admin/stock", new ManageStockHandler(connection));
+            server.createContext("/api/admin/add-dvm", new AddDVMHandler(connection));
+            server.createContext("/api/admin/remove-dvm", new RemoveDVMHandler(connection));
 
             server.setExecutor(null);
             server.start();
@@ -140,10 +141,10 @@ public class Server {
         }
     }
 
-    static class insertCardHandler implements HttpHandler {
+    static class InsertCardHandler implements HttpHandler {
         private final Connection connection;
 
-        public insertCardHandler(Connection connection) {
+        public InsertCardHandler(Connection connection) {
             this.connection = connection;
         }
 
@@ -188,6 +189,32 @@ public class Server {
                 Machine machine = new Machine(null, connection, exchange);
                 System.out.println("process prepayment api");
                 machine.ProcessPrepayment(dvm_id, item_code, item_num);
+            } else if ("OPTIONS".equals(exchange.getRequestMethod())) {
+                exchange.sendResponseHeaders(204, -1); // No Content
+            } else {
+                exchange.sendResponseHeaders(405, -1); // Method Not Allowed
+            }
+        }
+    }
+
+    static class InsertCodeHandler implements HttpHandler {
+        private final Connection connection;
+
+        public InsertCodeHandler(Connection connection) {
+            this.connection = connection;
+        }
+
+        @Override
+        public void handle(HttpExchange exchange) throws IOException {
+            addCorsHeaders(exchange);
+            if ("POST".equals(exchange.getRequestMethod())) {
+                JsonObject message = parseRequest(exchange);
+                String cert_code = message.get("code").getAsString();
+
+                // Machine 생성
+                Machine machine = new Machine(null, connection, exchange);
+                System.out.println("insert code api");
+                machine.insertCode(cert_code);
             } else if ("OPTIONS".equals(exchange.getRequestMethod())) {
                 exchange.sendResponseHeaders(204, -1); // No Content
             } else {

@@ -3,6 +3,8 @@ package org.example.service.managers;
 import org.example.model.Card;
 import org.example.model.PrepaymentState;
 
+import java.util.Map;
+
 public class SaleManager {
     private int total_sales;
     private StockManager stockManager;
@@ -24,7 +26,13 @@ public class SaleManager {
     }
 
     public void offerPrepaidItem(String cert_code) {
-        // TODO implement here
+        Map<String, String> map = prepaymentState.checkCode(cert_code);
+        String item_code = map.get("item_code");
+        if(item_code == "0") printManager.displayInvalidCode();
+        else {
+            int item_num = Integer.parseInt(map.get("item_num"));
+            printManager.displayValidCode(item_code,item_num);
+        }
     }
 
     public boolean offerItem(String selected_code, int selected_num) {

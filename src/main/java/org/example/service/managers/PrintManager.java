@@ -61,6 +61,20 @@ public class PrintManager {
         sendResponse(responseJson);
     }
 
+    public void displayInvalidCode() {
+        JsonObject responseJson = new JsonObject();
+        responseJson.addProperty("success", false);
+        sendResponse(responseJson);
+    }
+
+    public void displayValidCode(String item_code, int item_num) {
+        JsonObject responseJson = new JsonObject();
+        responseJson.addProperty("success", true);
+        responseJson.addProperty("item_code", item_code);
+        responseJson.addProperty("item_num", item_num);
+        sendResponse(responseJson);
+    }
+
     private void sendResponse(JsonObject jsonResponse) {
         try {
             String response = jsonResponse.toString();
