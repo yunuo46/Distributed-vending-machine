@@ -124,5 +124,7 @@ public class Machine {
 
     public void refundPrepayment(String card_data, String item_code, int item_num) {
         saleManager.refundPrepayment(card_data, item_code, item_num);
+        sortedDvm.removeRemainSortedDVM(item_code);
+        printManager.displayRefund();
     }
 }

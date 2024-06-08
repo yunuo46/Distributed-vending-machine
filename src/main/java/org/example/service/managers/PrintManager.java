@@ -93,6 +93,12 @@ public class PrintManager {
         sendResponse(responseJson);
     }
 
+    public void displayRefund() {
+        JsonObject responseJson = new JsonObject();
+        responseJson.addProperty("success", true);
+        sendResponse(responseJson);
+    }
+
     private void sendResponse(JsonObject jsonResponse) {
         try {
             String response = jsonResponse.toString();
