@@ -75,9 +75,9 @@ public class PrintManager {
         sendResponse(responseJson);
     }
 
-    public void displayEditStock() {
+    public void displayEditStock(boolean success) {
         JsonObject responseJson = new JsonObject();
-        responseJson.addProperty("success", true);
+        responseJson.addProperty("success", success);
         sendResponse(responseJson);
     }
 
