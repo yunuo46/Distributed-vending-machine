@@ -109,14 +109,17 @@ public class Machine {
 
     public void editStock(String item_code, int item_num) {
         stockManager.editStock(item_code, item_num);
+        printManager.displayEditStock();
     }
 
     public void addDVM(String id, String ip, String port) {
         dvm.addDVM(id, ip, port);
+        printManager.displayAddDVM();
     }
 
     public void removeDVM(String id) {
-        dvm.removeDVM(id);
+        boolean success = dvm.removeDVM(id);
+        printManager.displayRemoveDVM(success);
     }
 
     public void refundPrepayment(String card_data, String item_code, int item_num) {

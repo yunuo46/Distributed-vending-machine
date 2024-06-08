@@ -75,6 +75,24 @@ public class PrintManager {
         sendResponse(responseJson);
     }
 
+    public void displayEditStock() {
+        JsonObject responseJson = new JsonObject();
+        responseJson.addProperty("success", true);
+        sendResponse(responseJson);
+    }
+
+    public void displayAddDVM() {
+        JsonObject responseJson = new JsonObject();
+        responseJson.addProperty("success", true);
+        sendResponse(responseJson);
+    }
+
+    public void displayRemoveDVM(boolean success) {
+        JsonObject responseJson = new JsonObject();
+        responseJson.addProperty("success", success);
+        sendResponse(responseJson);
+    }
+
     private void sendResponse(JsonObject jsonResponse) {
         try {
             String response = jsonResponse.toString();
