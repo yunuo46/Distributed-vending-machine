@@ -13,7 +13,6 @@ public class StockManager {
         this.stock = new Stock(connection);
     }
 
-    private int total_stock;
     private int MAX_CNT = 10;
 
 

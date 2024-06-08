@@ -45,14 +45,6 @@ public class MsgManager {
         return authCode.toString();
     }
 
-    public void addDVM(String id, String ip, String port) {
-        dvm.addDVM(id,ip,port);
-    }
-
-    public void removeDVM(String id) {
-        dvm.removeDVM(id);
-    }
-
     public void stockResponse(String dst_id, String src_id, Object coordinate, String item_code, int item_num) {
         this.stockMsgManager.response(dst_id, src_id, coordinate, item_code, item_num);
     }

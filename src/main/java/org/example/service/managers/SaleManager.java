@@ -6,7 +6,6 @@ import org.example.model.PrepaymentState;
 import java.util.Map;
 
 public class SaleManager {
-    private int total_sales;
     private StockManager stockManager;
     private PrintManager printManager;
     private PrepaymentState prepaymentState;
