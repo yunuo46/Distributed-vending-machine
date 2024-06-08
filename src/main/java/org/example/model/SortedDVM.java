@@ -45,10 +45,10 @@ public class SortedDVM {
         }
     }
 
-    public ClosestDVMDto getNearestDVM(int item_code) {
+    public ClosestDVMDto getNearestDVM(String item_code) {
         String sql = "SELECT id, x, y FROM sorteddvm WHERE item_code = ? ORDER BY distance ASC LIMIT 1";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setInt(1, item_code);
+            pstmt.setString(1, item_code);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
                 String id = rs.getString("id");

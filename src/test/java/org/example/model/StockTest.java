@@ -26,7 +26,7 @@ public class StockTest {
         try (Statement stmt = connection.createStatement()) {
             String createTableSql = "CREATE TABLE stock (" +
                     "id INT AUTO_INCREMENT PRIMARY KEY," +
-                    "item_code INT NOT NULL," +
+                    "item_code VARCHAR(2) NOT NULL," +
                     "item_num INT NOT NULL," +
                     "item_cost INT NOT NULL)";
             stmt.execute(createTableSql);
@@ -45,23 +45,23 @@ public class StockTest {
 
     @Test
     public void testAddOrEditStock() {
-        stock.editStock(1001, 50);
-        int item_num = stock.checkStock(1001);
+        stock.editStock("01", 50);
+        int item_num = stock.checkStock("01");
         assertEquals(50, item_num, "Item number should be 50 after adding stock");
     }
 
     @Test
     public void testSaleStock() {
-        stock.editStock(1001, 50);
-        stock.saleStock(1001, 10);
-        int item_num = stock.checkStock(1001);
+        stock.editStock("01", 50);
+        stock.saleStock("01", 10);
+        int item_num = stock.checkStock("01");
         assertEquals(40, item_num, "Item number should be 40 after selling 10 items");
     }
 
     @Test
     public void testEditStock() {
-        stock.editStock(1001, 100);
-        int item_num = stock.checkStock(1001);
+        stock.editStock("01", 100);
+        int item_num = stock.checkStock("01");
         assertEquals(100, item_num, "Item number should be 100 after editing stock");
     }
 }

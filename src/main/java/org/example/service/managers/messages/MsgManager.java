@@ -53,15 +53,15 @@ public class MsgManager {
         dvm.removeDVM(id);
     }
 
-    public void stockResponse(String dst_id, String src_id, Object coordinate, int item_code, int item_num) {
+    public void stockResponse(String dst_id, String src_id, Object coordinate, String item_code, int item_num) {
         this.stockMsgManager.response(dst_id, src_id, coordinate, item_code, item_num);
     }
 
-    public void prepaymentResponse(String dst_id, String src_id, int item_code, int item_num, String cert_code) {
+    public void prepaymentResponse(String dst_id, String src_id, String item_code, int item_num, String cert_code) {
         this.prepaymentMsgManager.response(dst_id, src_id, item_code, item_num, cert_code);
     }
 
-    public ClosestDVMDto stockRequest(String id, int item_code, int item_num) {
+    public ClosestDVMDto stockRequest(String id, String item_code, int item_num) {
         List<DVMDto> dvmList = dvm.getAllDVM();
         int x = this.coordinate[0];
         int y = this.coordinate[1];
@@ -95,7 +95,7 @@ public class MsgManager {
         return sortedDVM.getNearestDVM(item_code);
     }
 
-    public PrepaymentDto prepaymentRequest(String id, String dst_id, int item_code, int item_num) throws IOException {
+    public PrepaymentDto prepaymentRequest(String id, String dst_id, String item_code, int item_num) throws IOException {
         String cert_code = makeCode();
         DVMDto dvmIpPort = dvm.getIpPort(dst_id);
         String ip = dvmIpPort.getIp();
@@ -108,6 +108,7 @@ public class MsgManager {
     private JsonSocketService connectSocket(String ip, int port) throws IOException {
         Socket socket = new Socket(ip, port);
         JsonSocketService jsonSocketService = new JsonSocketServiceImpl(socket);
+        System.out.println("Connect Socket To : "+ip+":"+port);
         jsonSocketService.start();
         return jsonSocketService;
     }

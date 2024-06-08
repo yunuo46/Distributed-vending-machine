@@ -17,7 +17,7 @@ public class SaleManager {
         this.card = card;
     }
 
-    public void processPrepayment(int item_code, int item_num, String cert_code) {
+    public void processPrepayment(String item_code, int item_num, String cert_code) {
         System.out.println("sale stock and store prepayment");
         stockManager.saleStock(item_code, item_num);
         prepaymentState.storePrePayment(item_code, item_num, cert_code);
@@ -27,7 +27,7 @@ public class SaleManager {
         // TODO implement here
     }
 
-    public boolean offerItem(int selected_code, int selected_num) {
+    public boolean offerItem(String selected_code, int selected_num) {
         int stock_num = stockManager.checkStock(selected_code, selected_num);
         if(stock_num > 0 && stock_num >= selected_num) {
             printManager.offerItem();
@@ -35,7 +35,7 @@ public class SaleManager {
         }else return false;
     }
 
-    public void checkCardData(String card_id, int item_code, int item_num) {
+    public void checkCardData(String card_id, String item_code, int item_num) {
         int price = item_num * stockManager.checkPrice(item_code);
         System.out.println("price is " + price);
         boolean success = card.checkCardData(card_id, price);

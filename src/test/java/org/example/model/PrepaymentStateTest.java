@@ -27,7 +27,7 @@ public class PrepaymentStateTest {
         try (Statement stmt = connection.createStatement()) {
             String createTableSql = "CREATE TABLE prepayment (" +
                     "id INT AUTO_INCREMENT PRIMARY KEY," +
-                    "item_code INT NOT NULL," +
+                    "item_code VARCHAR(2) NOT NULL," +
                     "item_num INT NOT NULL," +
                     "cert_code VARCHAR(255) NOT NULL UNIQUE)";
             stmt.execute(createTableSql);
@@ -46,20 +46,20 @@ public class PrepaymentStateTest {
 
     @Test
     public void testStorePrePayment() {
-        prepaymentState.storePrePayment(1001, 50, "cert123");
-        Map<String, Integer> result = prepaymentState.checkCode("cert123");
-        assertEquals(1001, result.get("item_code").intValue(), "Item code should be 1001");
-        assertEquals(50, result.get("item_num").intValue(), "Item number should be 50");
+        prepaymentState.storePrePayment("01", 50, "cert123");
+        Map<String, String> result = prepaymentState.checkCode("cert123");
+        assertEquals("01", result.get("item_code"), "Item code should be 1001");
+        assertEquals(50, Integer.parseInt(result.get("item_num")), "Item number should be 50");
     }
 
     @Test
     public void testCheckCodeAndDispose() {
-        prepaymentState.storePrePayment(1002, 30, "cert456");
-        Map<String, Integer> result = prepaymentState.checkCode("cert456");
-        assertEquals(1002, result.get("item_code").intValue(), "Item code should be 1002");
-        assertEquals(30, result.get("item_num").intValue(), "Item number should be 30");
+        prepaymentState.storePrePayment("02", 30, "cert456");
+        Map<String, String> result = prepaymentState.checkCode("cert456");
+        assertEquals("02", result.get("item_code"), "Item code should be 1002");
+        assertEquals(30, Integer.parseInt(result.get("item_num")), "Item number should be 30");
 
-        Map<String, Integer> failedResult = prepaymentState.checkCode("cert456");
-        assertEquals(0, failedResult.get("item_code").intValue(), "Item code should be 0");
+        Map<String, String> failedResult = prepaymentState.checkCode("cert456");
+        assertEquals("0", failedResult.get("item_code"), "Item code should be 0");
     }
 }

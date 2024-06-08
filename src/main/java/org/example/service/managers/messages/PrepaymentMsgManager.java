@@ -23,9 +23,8 @@ public class PrepaymentMsgManager {
         this.stockManager = stockManager;
     }
 
-    public boolean request(String id, String dst_id, int selected_code, int selected_num, String cert_code, JsonSocketService jsonRequestSocketService) {
-        String strItem = String.valueOf(selected_code);
-        PrepaymentReqFormat req = new PrepaymentReqFormat(id, dst_id, strItem, selected_num, cert_code);
+    public boolean request(String id, String dst_id, String selected_code, int selected_num, String cert_code, JsonSocketService jsonRequestSocketService) {
+        PrepaymentReqFormat req = new PrepaymentReqFormat(id, dst_id, selected_code, selected_num, cert_code);
         Gson gson = new Gson();
         JsonObject receivedMessage = gson.fromJson(sendMessage(req, jsonRequestSocketService), JsonObject.class);
 
@@ -35,11 +34,11 @@ public class PrepaymentMsgManager {
         int item_num = msg_content.get("item_num").getAsInt();
         boolean availability = msg_content.get("availability").getAsBoolean();
 
-        if(item_num < selected_num || !msg_type.equals("resp_stock")|| item_code!=selected_code) return false;
+        if(item_num < selected_num || !msg_type.equals("resp_stock")) return false;
         return availability;
     }
 
-    public void response(String id, String dst_id, int item_code, int item_num, String cert_code) {
+    public void response(String id, String dst_id, String item_code, int item_num, String cert_code) {
         int stock_num = stockManager.checkStock(item_code, item_num);
         PrepaymentResFormat res;
         if(stock_num <= 0 || stock_num < item_num) {

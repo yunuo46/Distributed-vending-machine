@@ -47,7 +47,7 @@ public class Machine {
         // TODO implement here
     }
 
-    public void selectItem(int item_code, int item_num) {
+    public void selectItem(String item_code, int item_num) {
         boolean isStock = saleManager.offerItem(item_code, item_num);
         if(!isStock){
             System.out.println("stock not enough to payment");
@@ -63,7 +63,7 @@ public class Machine {
         }
     }
 
-    public void selectPaymentOption(String dst_id, int item_code, int item_num) throws IOException {
+    public void selectPaymentOption(String dst_id, String item_code, int item_num) throws IOException {
         PrepaymentDto prepaymentDto = msgManager.prepaymentRequest(id, dst_id, item_code, item_num);
         boolean success = prepaymentDto.isSuccess();
         if(success){
@@ -82,7 +82,7 @@ public class Machine {
         }
     }
 
-    public void insertCardData(String card_id, int item_code, int item_num) {
+    public void insertCardData(String card_id, String item_code, int item_num) {
         saleManager.checkCardData(card_id, item_code,item_num);
     }
 
@@ -90,7 +90,7 @@ public class Machine {
         String src_id = message.get("src_id").getAsString();
         String dst_id = message.get("dst_id").getAsString();
         JsonObject msg_content = message.get("msg_content").getAsJsonObject();
-        int item_code = msg_content.get("item_code").getAsInt();
+        String item_code = msg_content.get("item_code").getAsString();
         int item_num = msg_content.get("item_num").getAsInt();
         msgManager.stockResponse(dst_id, src_id, coordinate, item_code, item_num);
     }
@@ -99,7 +99,7 @@ public class Machine {
         String src_id = message.get("src_id").getAsString();
         String dst_id = message.get("dst_id").getAsString();
         JsonObject msg_content = message.get("msg_content").getAsJsonObject();
-        int item_code = msg_content.get("item_code").getAsInt();
+        String item_code = msg_content.get("item_code").getAsString();
         int item_num = msg_content.get("item_num").getAsInt();
         String cert_code = msg_content.get("cert_code").getAsString();
         msgManager.prepaymentResponse(dst_id, src_id, item_code, item_num, cert_code);

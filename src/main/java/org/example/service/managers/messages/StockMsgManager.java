@@ -21,11 +21,8 @@ public class StockMsgManager {
         this.stockManager = stockManager;
     }
 
-    public CoorDto request(String id, String dst_id, int selected_code, int selected_num, JsonSocketService jsonRequestSocketService) {
-        String StrItemCode = String.valueOf(selected_code);
-        String result = "0" + StrItemCode;
-        System.out.println("result : " + result);
-        StockReqFormat req = new StockReqFormat(id, dst_id, StrItemCode, selected_num);
+    public CoorDto request(String id, String dst_id, String selected_code, int selected_num, JsonSocketService jsonRequestSocketService) {
+        StockReqFormat req = new StockReqFormat(id, dst_id, selected_code, selected_num);
         Gson gson = new Gson();
         JsonObject receivedMessage = gson.fromJson(sendMessage(req, jsonRequestSocketService), JsonObject.class);
         String msg_type = receivedMessage.get("msg_type").getAsString();
@@ -40,7 +37,7 @@ public class StockMsgManager {
         return new CoorDto(dst_id, coor_x, coor_y, item_code);
     }
 
-    public void response(String id, String dst_id, Object coor, int item_code, int item_num) {
+    public void response(String id, String dst_id, Object coor, String item_code, int item_num) {
         int stock_num = stockManager.checkStock(item_code, item_num);
         int[] coorArr = (int[])coor;
         String StrItemCode = String.valueOf(item_code);

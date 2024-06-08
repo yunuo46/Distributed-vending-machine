@@ -121,7 +121,7 @@ public class Server {
             addCorsHeaders(exchange);
             if ("POST".equals(exchange.getRequestMethod())) {
                 JsonObject message = parseRequest(exchange);
-                int item_code = message.get("item_code").getAsInt();
+                String item_code = message.get("item_code").getAsString();
                 int item_num = message.get("item_num").getAsInt();
 
                 // Machine 생성
@@ -149,7 +149,7 @@ public class Server {
             if ("POST".equals(exchange.getRequestMethod())) {
                 JsonObject message = parseRequest(exchange);
                 String card_data = message.get("card_data").getAsString();
-                int item_code = message.get("item_code").getAsInt();
+                String item_code = message.get("item_code").getAsString();
                 int item_num = message.get("item_num").getAsInt();
 
                 // Machine 생성
@@ -177,7 +177,7 @@ public class Server {
             if ("POST".equals(exchange.getRequestMethod())) {
                 JsonObject message = parseRequest(exchange);
                 String dvm_id = message.get("dvm_id").getAsString();
-                int item_code = message.get("item_code").getAsInt();
+                String item_code = message.get("item_code").getAsString();
                 int item_num = message.get("item_num").getAsInt();
 
                 // Machine 생성
