@@ -101,6 +101,10 @@ public class Server {
             server.createContext("/api/select", new SelectItemHandler(connection));
             server.createContext("/api/payment", new insertCardHandler(connection));
             server.createContext("/api/prepayment", new ProcessPrePaymentHandler(connection));
+            server.createContext("api/admin/stock", new ManageStockHandler(connection));
+            server.createContext("api/admin/add-dvm", new AddDVMHandler(connection));
+            server.createContext("api/admin/remove-dvm", new RemoveDVMHandler(connection));
+
             server.setExecutor(null);
             server.start();
             System.out.println("HTTP Server started on port 8080");
@@ -184,6 +188,86 @@ public class Server {
                 Machine machine = new Machine(null, connection, exchange);
                 System.out.println("process prepayment api");
                 machine.ProcessPrepayment(dvm_id, item_code, item_num);
+            } else if ("OPTIONS".equals(exchange.getRequestMethod())) {
+                exchange.sendResponseHeaders(204, -1); // No Content
+            } else {
+                exchange.sendResponseHeaders(405, -1); // Method Not Allowed
+            }
+        }
+    }
+
+    static class ManageStockHandler implements HttpHandler {
+        private final Connection connection;
+
+        public ManageStockHandler(Connection connection) {
+            this.connection = connection;
+        }
+
+        @Override
+        public void handle(HttpExchange exchange) throws IOException {
+            addCorsHeaders(exchange);
+            if ("POST".equals(exchange.getRequestMethod())) {
+                JsonObject message = parseRequest(exchange);
+                String item_code = message.get("item_code").getAsString();
+                int item_num = message.get("item_num").getAsInt();
+                // Machine 생성
+                Machine machine = new Machine(null, connection, exchange);
+                System.out.println("Manage Stock api");
+                machine.editStock(item_code, item_num);
+            } else if ("OPTIONS".equals(exchange.getRequestMethod())) {
+                exchange.sendResponseHeaders(204, -1); // No Content
+            } else {
+                exchange.sendResponseHeaders(405, -1); // Method Not Allowed
+            }
+        }
+    }
+
+    static class AddDVMHandler implements HttpHandler {
+        private final Connection connection;
+
+        public AddDVMHandler(Connection connection) {
+            this.connection = connection;
+        }
+
+        @Override
+        public void handle(HttpExchange exchange) throws IOException {
+            addCorsHeaders(exchange);
+            if ("POST".equals(exchange.getRequestMethod())) {
+                JsonObject message = parseRequest(exchange);
+                String id = message.get("id").getAsString();
+                String ip = message.get("ip").getAsString();
+                String port = message.get("port").getAsString();
+
+                // Machine 생성
+                Machine machine = new Machine(null, connection, exchange);
+                System.out.println("Add DVM api");
+                machine.addDVM(id,ip,port);
+            } else if ("OPTIONS".equals(exchange.getRequestMethod())) {
+                exchange.sendResponseHeaders(204, -1); // No Content
+            } else {
+                exchange.sendResponseHeaders(405, -1); // Method Not Allowed
+            }
+        }
+    }
+
+    static class RemoveDVMHandler implements HttpHandler {
+        private final Connection connection;
+
+        public RemoveDVMHandler(Connection connection) {
+            this.connection = connection;
+        }
+
+        @Override
+        public void handle(HttpExchange exchange) throws IOException {
+            addCorsHeaders(exchange);
+            if ("POST".equals(exchange.getRequestMethod())) {
+                JsonObject message = parseRequest(exchange);
+                String id = message.get("id").getAsString();
+
+                // Machine 생성
+                Machine machine = new Machine(null, connection, exchange);
+                System.out.println("Remove DVM api");
+                machine.removeDVM(id);
             } else if ("OPTIONS".equals(exchange.getRequestMethod())) {
                 exchange.sendResponseHeaders(204, -1); // No Content
             } else {

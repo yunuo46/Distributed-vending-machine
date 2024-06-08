@@ -25,7 +25,7 @@ public class StockManager {
     }
 
     public void editStock(String item_code, int item_num) {
-        // TODO implement here
+        stock.editStock(item_code, item_num);
     }
 
     public int checkPrice(String item_code) {

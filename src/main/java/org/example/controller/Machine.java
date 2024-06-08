@@ -21,6 +21,7 @@ public class Machine {
     private final String id;
     private final int[] coordinate;
     private final MsgManager msgManager;
+    private final StockManager stockManager;
     private final SaleManager saleManager;
     private final PrintManager printManager;
     private final DVM dvm;
@@ -32,8 +33,8 @@ public class Machine {
         printManager = new PrintManager(exchange);
         dvm = new DVM(connection);
         sortedDvm = new SortedDVM(connection);
+        stockManager = new StockManager(connection);
 
-        StockManager stockManager = new StockManager(connection);
         PrepaymentState prepaymentState = new PrepaymentState(connection);
         Card card = new Card(connection);
 
@@ -104,5 +105,17 @@ public class Machine {
         int item_num = msg_content.get("item_num").getAsInt();
         String cert_code = msg_content.get("cert_code").getAsString();
         msgManager.prepaymentResponse(dst_id, src_id, item_code, item_num, cert_code);
+    }
+
+    public void editStock(String item_code, int item_num) {
+        stockManager.editStock(item_code, item_num);
+    }
+
+    public void addDVM(String id, String ip, String port) {
+        dvm.addDVM(id, ip, port);
+    }
+
+    public void removeDVM(String id) {
+        dvm.removeDVM(id);
     }
 }

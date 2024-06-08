@@ -55,7 +55,6 @@ public class Stock {
                         updateStmt.setInt(2, 100);
                         updateStmt.setString(3, item_code);
                         updateStmt.executeUpdate();
-
                     }
                 } else {
                     // item_code가 존재하지 않으면 삽입
