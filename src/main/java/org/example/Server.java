@@ -100,7 +100,9 @@ public class Server {
 
             server.createContext("/api/select", new SelectItemHandler(connection));
             server.createContext("/api/payment", new InsertCardHandler(connection));
+            server.createContext("/api/payment/pre", new InsertCardPreHandler(connection));
             server.createContext("/api/prepayment", new ProcessPrePaymentHandler(connection));
+            server.createContext("/api/refund", new RefundPrepaymentHandler(connection));
             server.createContext("/api/code", new InsertCodeHandler(connection));
             server.createContext("/api/admin/stock", new ManageStockHandler(connection));
             server.createContext("/api/admin/add-dvm", new AddDVMHandler(connection));
@@ -160,7 +162,35 @@ public class Server {
                 // Machine 생성
                 Machine machine = new Machine(null, connection, exchange);
                 System.out.println("insert card api");
-                machine.insertCardData(card_data, item_code, item_num);
+                machine.insertCardData(card_data, item_code, item_num, false);
+            } else if ("OPTIONS".equals(exchange.getRequestMethod())) {
+                exchange.sendResponseHeaders(204, -1); // No Content
+            } else {
+                exchange.sendResponseHeaders(405, -1); // Method Not Allowed
+            }
+        }
+    }
+
+    static class InsertCardPreHandler implements HttpHandler {
+        private final Connection connection;
+
+        public InsertCardPreHandler(Connection connection) {
+            this.connection = connection;
+        }
+
+        @Override
+        public void handle(HttpExchange exchange) throws IOException {
+            addCorsHeaders(exchange);
+            if ("POST".equals(exchange.getRequestMethod())) {
+                JsonObject message = parseRequest(exchange);
+                String card_data = message.get("card_data").getAsString();
+                String item_code = message.get("item_code").getAsString();
+                int item_num = message.get("item_num").getAsInt();
+
+                // Machine 생성
+                Machine machine = new Machine(null, connection, exchange);
+                System.out.println("insert card to prepayment api");
+                machine.insertCardData(card_data, item_code, item_num, true);
             } else if ("OPTIONS".equals(exchange.getRequestMethod())) {
                 exchange.sendResponseHeaders(204, -1); // No Content
             } else {
@@ -196,6 +226,35 @@ public class Server {
             }
         }
     }
+
+    static class RefundPrepaymentHandler implements HttpHandler {
+        private final Connection connection;
+
+        public RefundPrepaymentHandler(Connection connection) {
+            this.connection = connection;
+        }
+
+        @Override
+        public void handle(HttpExchange exchange) throws IOException {
+            addCorsHeaders(exchange);
+            if ("POST".equals(exchange.getRequestMethod())) {
+                JsonObject message = parseRequest(exchange);
+                String card_data = message.get("card_data").getAsString();
+                String item_code = message.get("item_code").getAsString();
+                int item_num = message.get("item_num").getAsInt();
+
+                // Machine 생성
+                Machine machine = new Machine(null, connection, exchange);
+                System.out.println("refund prepayment api");
+                machine.refundPrepayment(card_data, item_code, item_num);
+            } else if ("OPTIONS".equals(exchange.getRequestMethod())) {
+                exchange.sendResponseHeaders(204, -1); // No Content
+            } else {
+                exchange.sendResponseHeaders(405, -1); // Method Not Allowed
+            }
+        }
+    }
+
 
     static class InsertCodeHandler implements HttpHandler {
         private final Connection connection;

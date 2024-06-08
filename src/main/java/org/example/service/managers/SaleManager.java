@@ -43,14 +43,20 @@ public class SaleManager {
         }else return false;
     }
 
-    public void checkCardData(String card_id, String item_code, int item_num) {
+    public void checkCardData(String card_id, String item_code, int item_num, boolean isPrepay) {
         int price = item_num * stockManager.checkPrice(item_code);
         System.out.println("price is " + price);
         boolean success = card.checkCardData(card_id, price);
         if(success) {
             System.out.println("card is valid");
-            stockManager.saleStock(item_code, item_num);
+            if(!isPrepay) stockManager.saleStock(item_code, item_num);
         }
         printManager.displayPayment(success);
+    }
+
+    public void refundPrepayment(String card_data, String item_code, int item_num) {
+        int price = item_num * stockManager.checkPrice(item_code);
+        card.refundCardData(card_data, price);
+        System.out.println("refund price is " + price);
     }
 }

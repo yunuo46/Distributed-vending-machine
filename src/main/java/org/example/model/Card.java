@@ -47,4 +47,15 @@ public class Card {
         }
     }
 
+    public void refundCardData(String card_id, int price) {
+        String sql = "UPDATE card SET balance = balance + ? WHERE id = ?";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, price);
+            pstmt.setString(2, card_id);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

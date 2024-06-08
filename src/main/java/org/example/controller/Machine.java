@@ -84,8 +84,8 @@ public class Machine {
         }
     }
 
-    public void insertCardData(String card_id, String item_code, int item_num) {
-        saleManager.checkCardData(card_id, item_code,item_num);
+    public void insertCardData(String card_id, String item_code, int item_num, boolean isPrepay) {
+        saleManager.checkCardData(card_id, item_code,item_num, isPrepay);
     }
 
     public void stockResponse(JsonObject message){
@@ -117,5 +117,9 @@ public class Machine {
 
     public void removeDVM(String id) {
         dvm.removeDVM(id);
+    }
+
+    public void refundPrepayment(String card_data, String item_code, int item_num) {
+        saleManager.refundPrepayment(card_data, item_code, item_num);
     }
 }
