@@ -63,11 +63,12 @@ public class Machine {
         }
     }
 
-    public void selectPaymentOption(String dst_id, String item_code, int item_num) throws IOException {
+    public void ProcessPrepayment(String dst_id, String item_code, int item_num) throws IOException {
         PrepaymentDto prepaymentDto = msgManager.prepaymentRequest(id, dst_id, item_code, item_num);
         boolean success = prepaymentDto.isSuccess();
         if(success){
             System.out.println("prepayment successful");
+            sortedDvm.removeRemainSortedDVM(item_code);
             printManager.displayPrepayment(prepaymentDto.getCertCode());
         }else{
             ClosestDVMDto closestDVMDto = sortedDvm.getNearestDVM(item_code);

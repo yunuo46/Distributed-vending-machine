@@ -30,11 +30,11 @@ public class PrepaymentMsgManager {
 
         String msg_type = receivedMessage.get("msg_type").getAsString();
         JsonObject msg_content = receivedMessage.get("msg_content").getAsJsonObject();
-        int item_code = msg_content.get(("item_code")).getAsInt();
+        String item_code = msg_content.get(("item_code")).getAsString();
         int item_num = msg_content.get("item_num").getAsInt();
         boolean availability = msg_content.get("availability").getAsBoolean();
 
-        if(item_num < selected_num || !msg_type.equals("resp_stock")) return false;
+        if(item_num < selected_num || !msg_type.equals("resp_prepay")) return false;
         return availability;
     }
 

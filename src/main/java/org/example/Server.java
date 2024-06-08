@@ -100,7 +100,7 @@ public class Server {
 
             server.createContext("/api/select", new SelectItemHandler(connection));
             server.createContext("/api/payment", new insertCardHandler(connection));
-            server.createContext("/api/prepayment", new SelectPrepaymentHandler(connection));
+            server.createContext("/api/prepayment", new ProcessPrePaymentHandler(connection));
             server.setExecutor(null);
             server.start();
             System.out.println("HTTP Server started on port 8080");
@@ -164,10 +164,10 @@ public class Server {
         }
     }
 
-    static class SelectPrepaymentHandler implements HttpHandler {
+    static class ProcessPrePaymentHandler implements HttpHandler {
         private final Connection connection;
 
-        public SelectPrepaymentHandler(Connection connection) {
+        public ProcessPrePaymentHandler(Connection connection) {
             this.connection = connection;
         }
 
@@ -182,8 +182,8 @@ public class Server {
 
                 // Machine 생성
                 Machine machine = new Machine(null, connection, exchange);
-                System.out.println("select payment api");
-                machine.selectPaymentOption(dvm_id, item_code, item_num);
+                System.out.println("process prepayment api");
+                machine.ProcessPrepayment(dvm_id, item_code, item_num);
             } else if ("OPTIONS".equals(exchange.getRequestMethod())) {
                 exchange.sendResponseHeaders(204, -1); // No Content
             } else {

@@ -63,4 +63,13 @@ public class SortedDVM {
         }
         return null;
     }
+
+    public void removeRemainSortedDVM(String itemCode) {
+        String sql = "DELETE FROM sorteddvm WHERE item_code = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setString(1, itemCode);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
