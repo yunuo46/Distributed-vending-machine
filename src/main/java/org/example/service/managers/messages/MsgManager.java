@@ -97,7 +97,7 @@ public class MsgManager {
         return new PrepaymentDto(success, cert_code);
     }
 
-    private JsonSocketService connectSocket(String ip, int port) throws IOException {
+    public JsonSocketService connectSocket(String ip, int port) throws IOException {
         Socket socket = new Socket(ip, port);
         JsonSocketService jsonSocketService = new JsonSocketServiceImpl(socket);
         System.out.println("Connect Socket To : "+ip+":"+port);

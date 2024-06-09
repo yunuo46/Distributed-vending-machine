@@ -8,9 +8,6 @@ import org.example.service.managers.StockManager;
 import org.example.service.managers.messages.format.Stock.StockReqFormat;
 import org.example.service.managers.messages.format.Stock.StockResFormat;
 import org.example.service.socket.JsonSocketService;
-import org.example.service.socket.JsonSocketServiceImpl;
-
-import java.net.Socket;
 
 public class StockMsgManager {
     private JsonSocketService jsonSocketService;
@@ -49,6 +46,7 @@ public class StockMsgManager {
         String jsonStr = gson.toJson(message);
         JsonObject jsonObj = JsonParser.parseString(jsonStr).getAsJsonObject();
         SocketService.sendMessage(jsonObj.toString());
-        return SocketService.receiveMessage().toString();
+        String receivedMessage = SocketService.receiveMessage();
+        return receivedMessage != null ? receivedMessage.toString() : "";
     }
 }
