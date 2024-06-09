@@ -111,4 +111,16 @@ public class PrintManager {
             e.printStackTrace();
         }
     }
+
+    public void displayLogin(boolean success) {
+        JsonObject responseJson = new JsonObject();
+        responseJson.addProperty("success", success);
+        sendResponse(responseJson);
+    }
+
+    public void displayLogout() {
+        JsonObject responseJson = new JsonObject();
+        responseJson.addProperty("success", true);
+        sendResponse(responseJson);
+    }
 }

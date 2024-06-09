@@ -107,21 +107,6 @@ public class Machine {
         msgManager.prepaymentResponse(dst_id, src_id, item_code, item_num, cert_code);
     }
 
-    public void editStock(String item_code, int item_num) {
-        boolean success = stockManager.editStock(item_code, item_num);
-        printManager.displayEditStock(success);
-    }
-
-    public void addDVM(String id, String ip, String port) {
-        dvm.addDVM(id, ip, port);
-        printManager.displayAddDVM();
-    }
-
-    public void removeDVM(String id) {
-        boolean success = dvm.removeDVM(id);
-        printManager.displayRemoveDVM(success);
-    }
-
     public void refundPrepayment(String card_data, String item_code, int item_num) {
         saleManager.refundPrepayment(card_data, item_code, item_num);
         sortedDvm.removeRemainSortedDVM(item_code);

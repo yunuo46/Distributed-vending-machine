@@ -6,6 +6,7 @@ import com.google.gson.JsonParser;
 import com.sun.net.httpserver.HttpServer;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpExchange;
+import org.example.controller.Admin;
 import org.example.controller.Machine;
 import org.example.service.socket.JsonSocketService;
 import org.example.service.socket.JsonSocketServiceImpl;
@@ -296,10 +297,10 @@ public class Server {
                 JsonObject message = parseRequest(exchange);
                 String item_code = message.get("item_code").getAsString();
                 int item_num = message.get("item_num").getAsInt();
-                // Machine 생성
-                Machine machine = new Machine(null, connection, exchange);
-                System.out.println("Manage Stock api");
-                machine.editStock(item_code, item_num);
+                // Admin 생성
+                Admin admin = new Admin(connection, exchange);
+                System.out.println("Admin Manage Stock api");
+                admin.editStock(item_code, item_num);
             } else if ("OPTIONS".equals(exchange.getRequestMethod())) {
                 exchange.sendResponseHeaders(204, -1); // No Content
             } else {
@@ -324,10 +325,10 @@ public class Server {
                 String ip = message.get("ip").getAsString();
                 String port = message.get("port").getAsString();
 
-                // Machine 생성
-                Machine machine = new Machine(null, connection, exchange);
-                System.out.println("Add DVM api");
-                machine.addDVM(id,ip,port);
+                // Admin 생성
+                Admin admin = new Admin(connection, exchange);
+                System.out.println("Admin Add DVM api");
+                admin.addDVM(id,ip,port);
             } else if ("OPTIONS".equals(exchange.getRequestMethod())) {
                 exchange.sendResponseHeaders(204, -1); // No Content
             } else {
@@ -350,10 +351,10 @@ public class Server {
                 JsonObject message = parseRequest(exchange);
                 String id = message.get("id").getAsString();
 
-                // Machine 생성
-                Machine machine = new Machine(null, connection, exchange);
-                System.out.println("Remove DVM api");
-                machine.removeDVM(id);
+                // Admin 생성
+                Admin admin = new Admin(connection, exchange);
+                System.out.println("Admin Remove DVM api");
+                admin.removeDVM(id);
             } else if ("OPTIONS".equals(exchange.getRequestMethod())) {
                 exchange.sendResponseHeaders(204, -1); // No Content
             } else {
