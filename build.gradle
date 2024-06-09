@@ -29,8 +29,8 @@ dependencies {
     testImplementation 'org.junit-pioneer:junit-pioneer:1.8.0'
 }
 
-tasks.withType(Test) {
-    enabled = false
+tasks.named('build') {
+    dependsOn.remove(tasks.named('test'))
 }
 
 test {
